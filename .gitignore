@@ -1,0 +1,46 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+*.env
+
+# Raw & Benchmark Datasets (stored locally, too large for GitHub)
+Datasets/
+data/
+datasets/
+raw_data/
+
+# Model Checkpoints & Pre-trained Weights (>100MB rejected by GitHub)
+*.pt
+*.pth
+*.bin
+*.ckpt
+*.onnx
+*.h5
+*.keras
+*.tflite
+*.safetensors
+checkpoints/
+checkpoints_*/
+exported_models/
+
+# Cache, Temporary Files, and Preprocessed Arrays
+cache/
+cache_gpu/
+*.npz
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.pytest_cache/
+
+# OS and Editor Files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Empty scratch folders
+New folder/

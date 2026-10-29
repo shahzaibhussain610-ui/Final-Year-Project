@@ -1,0 +1,33 @@
+project_name: "Facial_Expression_Recognition_2DCNN"
+seed: 42
+device: "cuda" # Automatically falls back to 'cpu' or 'mps' in code if unavailable
+
+dataset:
+  name: "FER2013"          # Options: "FER2013" or "CK+"
+  root_dir: "./data"       # Path containing 'train' and 'val' folders (ImageFolder format)
+  img_size: 48             # Standard 48x48 resolution for FER2013 & resized CK+
+  in_channels: 1           # 1 for Grayscale, 3 for RGB
+  num_classes: 7           # 7 for FER2013 (Angry, Disgust, Fear, Happy, Sad, Surprise, Neutral)
+  num_workers: 4
+  pin_memory: true
+  use_class_weights: true  # Crucial for handling Disgust/Fear minority classes in FER2013/CK+
+
+model:
+  architecture: "SEResNet2D"
+  base_filters: 64
+  dropout_rate: 0.4
+
+training:
+  batch_size: 64           # Use 64/128 for FER2013; reduce to 16/32 for CK+
+  epochs: 60
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  label_smoothing: 0.1     # Prevents overconfidence on noisy FER2013 labels
+  grad_clip_norm: 1.0
+  early_stopping_patience: 10
+  checkpoint_dir: "./checkpoints"
+
+scheduler:
+  factor: 0.5
+  patience: 4
+  min_lr: 0.000001

@@ -1,0 +1,53 @@
+# Configuration consumed by FER2013_Deep_Attention_Network.ipynb.
+# Relative checkpoint/output paths resolve from the FER2013_Emotion_Recognition project root.
+# This notebook always runs training and evaluates the best checkpoint on the official test set.
+# It does not implement pixel deduplication or train/test-overlap removal.
+
+dataset_path: "D:\\FYP\\Datasets\\Facial Datasets\\FER2013"
+checkpoint_dir: "models/deep_attention"
+output_dir: "results/deep_attention"
+
+# Data
+image_size: 48
+num_classes: 7
+validation_split: 0.10
+grayscale: true
+batch_size: 64
+num_workers: 0
+seed: 42
+
+# Training
+epochs: 60
+learning_rate: 0.001
+early_stopping_patience: 5
+early_stopping_min_delta: 0.0001
+scheduler_factor: 0.5
+scheduler_patience: 3
+scheduler_min_lr: 0.000001
+class_weighting: true
+dropout: 0.4
+weight_decay: 0.0
+model_width: 32
+
+# Attention and augmentation
+attention_reduction: 8
+use_attention: true
+augment_enabled: true
+augment_rotation: 10
+augment_horizontal_flip: true
+augment_translate: 0.06
+augment_zoom: 0.10
+augment_brightness: 0.20
+augment_contrast: 0.20
+
+# Optional no-attention ablation; the primary model always trains from scratch.
+run_baseline: false
+
+# Output filenames
+best_model_filename: "deep_attention_fer2013.pt"
+baseline_checkpoint_filename: "baseline_cnn_fer2013.pt"
+config_filename: "config.json"
+label_map_filename: "label_mapping.json"
+history_filename: "training_history.json"
+evaluation_filename: "evaluation_metrics.json"
+baseline_metrics_filename: "baseline_metrics.json"

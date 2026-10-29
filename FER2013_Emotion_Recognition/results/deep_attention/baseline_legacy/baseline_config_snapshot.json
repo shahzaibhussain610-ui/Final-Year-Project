@@ -1,0 +1,98 @@
+{
+  "snapshot_type": "historical_baseline_reconstruction",
+  "experiment_id": "baseline_legacy_seed42",
+  "provenance": {
+    "notebook": "Notebooks/FER2013_Deep_Attention_Network.ipynb",
+    "notebook_sha256_at_audit": "a69ff152f57777c4c085dbb9f8538f53ffc1df73f5ae3bb6a337d4e4bc5e5657",
+    "values_source": "Saved baseline notebook code/output and historical checkpoint metadata inspected earlier in this audit.",
+    "limitations": [
+      "The original YAML used by the baseline run is not available as a separate unchanged file.",
+      "The current YAML describes a later experiment configuration and is not the baseline configuration.",
+      "At snapshot time, the baseline checkpoint directory was absent, so the checkpoint could not be re-verified or hashed."
+    ]
+  },
+  "dataset": {
+    "path": "D:\\FYP\\Datasets\\Facial Datasets\\FER2013",
+    "layout": "official train/test image folders",
+    "image_size": 48,
+    "grayscale": true,
+    "normalization": "uint8 pixels converted to float32 and divided by 255",
+    "classes": [
+      "angry",
+      "disgust",
+      "fear",
+      "happy",
+      "neutral",
+      "sad",
+      "surprise"
+    ],
+    "official_train_images": 28709,
+    "official_test_images": 7178,
+    "validation_split_of_official_train": 0.1,
+    "validation_split_method": "stratified",
+    "random_seed": 42
+  },
+  "model": {
+    "name": "DeepAttentionNetwork",
+    "trained_from_scratch": true,
+    "input_channels": 1,
+    "width": 32,
+    "feature_blocks": 3,
+    "feature_channels": [
+      64,
+      128,
+      256
+    ],
+    "feature_block": "two 3x3 convolutions with residual projection when needed, batch normalization, ReLU, optional attention, and max pooling",
+    "attention": "sequential CBAM channel and spatial attention in each feature block",
+    "attention_reduction": 8,
+    "head": "global average pooling, 256-to-128 dense layer, ReLU, dropout, 128-to-7 logits",
+    "dropout": 0.4,
+    "trainable_parameters": 1262861
+  },
+  "training": {
+    "epochs_max": 20,
+    "batch_size": 64,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "loss": "class-weighted CrossEntropyLoss",
+    "class_weights_fit_on": "training partition only",
+    "label_smoothing": 0.0,
+    "scheduler": {
+      "name": "ReduceLROnPlateau",
+      "monitor": "validation loss",
+      "factor": 0.5,
+      "patience": 3,
+      "minimum_learning_rate": 0.000001
+    },
+    "early_stopping": {
+      "monitor": "validation loss",
+      "patience": 5,
+      "minimum_delta": 0.0001
+    },
+    "checkpoint_selection": "highest validation accuracy",
+    "checkpoint_restored_before_test_evaluation": true,
+    "augmentation": {
+      "training_partition_only": true,
+      "horizontal_flip": true,
+      "rotation_degrees": 10,
+      "translation_fraction": 0.06,
+      "zoom_fraction": 0.1,
+      "brightness_jitter": 0.2,
+      "contrast_jitter": 0.2
+    }
+  },
+  "reported_baseline": {
+    "best_epoch": 19,
+    "best_validation_accuracy": 0.6116,
+    "test_accuracy": 0.6101,
+    "test_loss": 1.0346,
+    "macro_precision": 0.5825,
+    "macro_recall": 0.5783,
+    "macro_f1": 0.5706,
+    "weighted_precision": 0.6174,
+    "weighted_recall": 0.6101,
+    "weighted_f1": 0.6036
+  }
+}

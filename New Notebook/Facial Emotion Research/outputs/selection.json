@@ -1,0 +1,15 @@
+{
+ "candidate": "ensemble(vit_small_patch16_224, deit_tiny_patch16_224)",
+ "type": "ensemble",
+ "runs": [
+  "D_vit_small_patch16_224_s0",
+  "D_deit_tiny_patch16_224_s0"
+ ],
+ "deployable": "D_vit_small_patch16_224_s0",
+ "val_macro_f1_mean": 0.6749449398675482,
+ "val_macro_f1_std": 0.0,
+ "tta": true,
+ "baseline": "A1_report_resnet50",
+ "locked_at": "2026-10-23 11:55:25",
+ "deployable_sha256": "52dc47e4418ec4874b5dbef5562e2cfc01c79954c829aea2e845594fe9ec66d3"
+}

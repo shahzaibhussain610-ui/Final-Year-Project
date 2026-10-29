@@ -1,0 +1,124 @@
+# ==============================================================================
+# MASTER CONFIGURATION: MULTIMODAL FACIAL & VOICE EMOTION RECOGNITION
+# ==============================================================================
+
+environment:
+  project_name: "Multimodal_Affective_Benchmark"
+  seed: 42
+  device: "cuda"                  # "cuda", "mps", or "cpu"
+  mixed_precision: true           # FP16 automatic mixed precision
+  num_workers: 0                  # 0 is required on Windows Jupyter notebooks to avoid multiprocessing spawn deadlock
+  pin_memory: true
+  output_dir: "./outputs"
+  checkpoint_dir: "./checkpoints"
+
+taxonomy:
+  num_classes: 7
+  # Unified 7-class space shared across CK+, FER2013, AffectNet+, RAVDESS, and CREMA-D
+  # (CREMA-D has 6 classes: Neutral, Happy, Sad, Anger, Fear, Disgust -> maps cleanly into indices 0..5)
+  class_names:
+    0: "neutral"
+    1: "happy"
+    2: "sad"
+    3: "angry"
+    4: "fear"
+    5: "disgust"
+    6: "surprise"
+
+datasets:
+  data_root: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets"
+
+  # Static Image Datasets (Visual Only)
+  fer2013:
+    root_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/FER2013"
+    modality: "visual_static"
+    enabled: true
+
+  ck_plus:
+    root_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/CK+"
+    csv_path: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/CK+/ckextended.csv"
+    modality: "visual_static"
+    enabled: false                # Toggle true to include CK+ 48x48 samples
+
+  affectnet_plus:
+    root_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/AffectNet+"
+    modality: "visual_static"
+    enabled: false                # Large-scale (414k images). Toggle true when ready for full pretraining
+
+  # Audio-Visual Datasets (Supports Individual Audio/Visual or Parallel Multimodal)
+  crema_d:
+    root_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/CREMA-D"
+    audio_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/CREMA-D"
+    video_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/CREMA-D"
+    modality: "audio_visual"
+    enabled: true
+
+  ravdess:
+    root_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/RAVDESS"
+    audio_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/RAVDESS/Audio_Speech_Actors_01-24"
+    video_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/RAVDESS"
+    modality: "audio_visual"
+    enabled: true
+
+preprocessing:
+  visual:
+    image_size: 224
+    num_frames: 8                 # Number of frames sampled per video clip (RAVDESS/CREMA-D)
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+  audio:
+    sample_rate: 16000
+    duration_sec: 3.0             # Standardized 3-second window (48,000 samples)
+    n_fft: 1024
+    hop_length: 256
+    n_mels: 128
+    n_mfcc: 40
+    spec_augment: true
+
+architecture:
+  # Choose primary visual backbone: "vit_b_16", "efficientnet_b2", "resnet50", or "ensemble_all"
+  visual_backbone: "ensemble_all"
+  
+  # Paths to your trained FER2013 checkpoint weights
+  pretrained_visual_weights:
+    load_custom: true
+    efficientnet_b2: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/best_model efficient_b2.pt"
+    vit_b_16: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/best_model vit b_16.pt"
+    resnet50: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/best_model resnet50.pt"
+
+  visual_temporal:
+    type: "bilstm_attention"      # Models temporal dynamics across video frames (Li et al. [13] upgrade)
+    hidden_dim: 512
+    num_layers: 2
+    dropout: 0.3
+
+  audio_backbone:
+    type: "cnn_se_bilstm"         # 2D Res-SE CNN on Log-Mel Spectrograms + Temporal BiLSTM
+    embedding_dim: 512
+    dropout: 0.3
+
+  multimodal_fusion:
+    type: "cross_attention_gmu"   # Bidirectional Cross-Modal Attention + Gated Multimodal Unit
+    embed_dim: 512
+    num_heads: 8
+    dropout: 0.25
+    modality_dropout_prob: 0.20   # Randomly drops audio or video during training for real-world robustness
+
+training:
+  # Execution mode: "parallel_multimodal", "individual_cremad", "staged_full_pipeline"
+  mode: "staged_full_pipeline"
+  batch_size: 16
+  epochs_visual_stage: 25         # Stage 1: Fine-tune visual backbones on AffectNet+ / FER2013 / CK+
+  epochs_cremad_stage: 30         # Stage 2: Individual/Multimodal training on CREMA-D
+  epochs_ravdess_parallel: 40     # Stage 3: Parallel Audio-Visual fusion on RAVDESS + CREMA-D
+  
+  optimizer:
+    name: "radam"                 # Rectified Adam (Melinte & Vladareanu [50])
+    lr_backbone: 0.0001
+    lr_fusion_head: 0.0005
+    weight_decay: 0.0001
+  
+  loss:
+    type: "focal_label_smoothing"
+    gamma: 2.0
+    label_smoothing: 0.1

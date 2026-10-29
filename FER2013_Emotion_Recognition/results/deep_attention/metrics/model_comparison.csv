@@ -1,0 +1,9 @@
+Metric,Deep Attention Network
+Test accuracy,0.6128
+Macro precision,0.5742
+Macro recall,0.6065
+Macro F1,0.5797
+Weighted F1,0.6064
+Parameters,"1,262,861"
+Inference time (ms/image),61.06
+Best val. accuracy,0.6127

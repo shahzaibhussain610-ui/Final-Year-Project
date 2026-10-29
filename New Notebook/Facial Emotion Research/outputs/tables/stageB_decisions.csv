@@ -1,0 +1,7 @@
+component,val macro-F1 without it,contribution (B1 - variant),decision
+label smoothing,0.525331642932863,0.006506322856467461,keep
+Mixup/CutMix,0.5430253358160556,-0.011187370026725096,drop
+strong augmentation,0.5531316080407243,-0.02129364225139374,drop
+warm-up + cosine schedule,0.5828529054092256,-0.05101493961989512,drop
+EMA weights,0.5350293303639234,-0.003191364574592903,drop
+imbalance strategy,0.5318379657893305,0.048553170811041046,balanced_sampler (best: balanced_sampler)

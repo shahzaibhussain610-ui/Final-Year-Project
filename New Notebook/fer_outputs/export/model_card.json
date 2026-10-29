@@ -1,0 +1,28 @@
+{
+ "classes": [
+  "angry",
+  "disgust",
+  "fear",
+  "happy",
+  "sad",
+  "surprise",
+  "neutral"
+ ],
+ "input": "1x1x112x112 grayscale face crop scaled to [0,1]",
+ "face_crop": "square face box + margin, see FaceCropper",
+ "selection": {
+  "candidate": "ensemble(vit_small_patch16_224, mobilenetv3_large_100)",
+  "type": "ensemble",
+  "runs": [
+   "D_vit_small_patch16_224_s0",
+   "D_mobilenetv3_large_100_s0"
+  ],
+  "deployable": "D_vit_small_patch16_224_s0",
+  "val_macro_f1_mean": 0.6940528450033037,
+  "val_macro_f1_std": 0.0,
+  "tta": true,
+  "baseline": "A1_report_resnet50",
+  "locked_at": "2026-10-23 08:48:15",
+  "deployable_sha256": "5f62cabb9685e6f26f7f5aa2894bee127d501d10be1b56580cdc5d8d5ad51faf"
+ }
+}

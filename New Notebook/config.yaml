@@ -1,0 +1,120 @@
+PATHS:
+  FER2013_DIR: '../Datasets/Facial Dataset/FER2013'
+  FER2013_CSV: '../Datasets/Facial Dataset/FER2013 CSV/fer2013.csv'
+  CREMAD_DIR: '../Datasets/Voice and Facial/CREMA-D'
+
+OUTPUT_DIR: "./fer_outputs"
+
+RUN_PROFILE: "quick"
+
+PROFILES:
+  smoke:
+    max_per_class_train: 60
+    max_per_class_eval: 25
+    max_videos_per_dataset: 24
+    epochs_baseline: 2
+    epochs_ablation: 2
+    epochs_arch: 2
+    epochs_final: 2
+    img_size: 48
+    img_size_candidates: [48]
+    seeds_final: [0, 1]
+    batch_size: 32
+    patience: 5
+    arch_candidates:
+      - resnet18
+      - efficientnet_b0
+      - vit_small_patch16_224
+      - hybrid_cnn_transformer
+      - custom_attn_cnn
+    top_k_multiseed: 2
+    on_pretrained_fail: "random"
+  quick:
+    max_per_class_train: null
+    max_per_class_eval: null
+    max_videos_per_dataset: null
+    epochs_baseline: 15
+    epochs_ablation: 12
+    epochs_arch: 20
+    epochs_final: 20
+    img_size: 112
+    img_size_candidates: [112]
+    seeds_final: [0]
+    batch_size: 128
+    patience: 6
+    arch_candidates:
+      - resnet50
+      - convnext_tiny
+      - efficientnet_b0
+      - vit_small_patch16_224
+      - hybrid_cnn_transformer
+      - mobilenetv3_large_100
+      - custom_attn_cnn
+    top_k_multiseed: 1
+    on_pretrained_fail: "skip"
+  full:
+    max_per_class_train: null
+    max_per_class_eval: null
+    max_videos_per_dataset: null
+    epochs_baseline: 30
+    epochs_ablation: 20
+    epochs_arch: 40
+    epochs_final: 40
+    img_size: 112
+    img_size_candidates: [112, 224]
+    seeds_final: [0, 1, 2]
+    batch_size: 128
+    patience: 8
+    arch_candidates:
+      - resnet50
+      - convnext_tiny
+      - efficientnet_b0
+      - efficientnet_b2
+      - vit_small_patch16_224
+      - hybrid_cnn_transformer
+      - mobilenetv3_large_100
+      - custom_attn_cnn
+    top_k_multiseed: 3
+    on_pretrained_fail: "skip"
+
+RUN_STAGES:
+  baseline_reproduction: true
+  recipe_ablation: true
+  training_regime: true
+  architecture_search: true
+  label_source: true
+  multiseed_finalists: true
+  ensemble: true
+  cross_dataset: true
+  robustness: true
+  export_onnx: true
+
+FER_PROTOCOL: "auto"
+FOLDER_VAL_FRACTION: 0.10
+REMOVE_CROSS_SPLIT_DUPLICATES: true
+NEAR_DUPLICATE_CHECK: true
+DROP_BLANK_TRAIN_IMAGES: true
+
+EXTERNAL_SPLIT: [0.70, 0.15, 0.15]
+
+RAVDESS_CALM_POLICY: "drop"
+CONTEMPT_POLICY: "drop"
+RAVDESS_MODALITIES: ["01", "02"]
+
+FRAMES_PER_VIDEO: 8
+FACE_MARGIN: 0.15
+CKPLUS_PEAK_FRAMES: 3
+CKPLUS_ADD_NEUTRAL_FIRST_FRAME: true
+CACHE_SIZE: 48
+
+ABLATION_BACKBONE: "resnet18"
+SELECTION_METRIC: "val_macro_f1"
+IMPROVEMENT_TOLERANCE: 0.003
+IMBALANCE_POWER: 0.5
+USE_AMP: true
+DETERMINISTIC: false
+PREFER_TIMM_WEIGHTS: true
+
+BOOTSTRAP_ROUNDS: 1000
+LATENCY_RUNS: 50
+LATENCY_WARMUP: 10

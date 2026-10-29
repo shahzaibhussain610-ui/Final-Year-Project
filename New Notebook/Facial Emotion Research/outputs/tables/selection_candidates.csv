@@ -1,0 +1,13 @@
+candidate,type,n_seeds,val_macro_f1_mean,val_macro_f1_std,val_acc_mean,deployable
+"ensemble(vit_small_patch16_224, deit_tiny_patch16_224)",ensemble,1,0.6749449398675482,0.0,0.6926720534967957,D_vit_small_patch16_224_s0
+vit_small_patch16_224|fer2013|finetune|112px|4ea01c,single,1,0.6591923268133655,0.0,0.6879353580384509,D_vit_small_patch16_224_s0
+deit_tiny_patch16_224|fer2013|finetune|112px|4ea01c,single,1,0.6550492956268761,0.0,0.6670381721928114,D_deit_tiny_patch16_224_s0
+resnet50|fer2013|finetune|112px|4ea01c,single,1,0.6530616303385993,0.0,0.674282529952633,D_resnet50_s0
+mobilenetv3_large_100|fer2013|finetune|112px|4ea01c,single,1,0.6518675946952837,0.0,0.6636946224575091,D_mobilenetv3_large_100_s0
+efficientnet_b0|fer2013|finetune|112px|4ea01c,single,1,0.6507203409715474,0.0,0.6675954304820284,D_efficientnet_b0_s0
+tv_resnet50|fer2013|finetune|224px|e4b94d (baseline),single,1,0.6489937564565198,0.0,0.673725271663416,A1_report_resnet50
+convnext_tiny|fer2013|finetune|112px|4ea01c,single,1,0.6484345632621075,0.0,0.6673168013374199,D_convnext_tiny_s0
+hybrid_cnn_transformer|fer2013|finetune|112px|4ea01c,single,1,0.6259533523697385,0.0,0.6547784898300362,D_hybrid_cnn_transformer_s0
+custom_cnn_noattn|fer2013|scratch|48px|5006ef,single,1,0.6046043004348244,0.0,0.6285873502368348,D_custom_cnn_noattn_s0
+custom_attn_cnn|fer2013|scratch|48px|5006ef,single,1,0.5671367786049002,0.0,0.6157704095848425,D_custom_attn_cnn_s0
+custom_attn_cnn|fer2013|scratch|48px|0eaea3 (baseline),single,1,0.48183310571027643,0.0,0.5427695736974087,A2_report_custom_cnn

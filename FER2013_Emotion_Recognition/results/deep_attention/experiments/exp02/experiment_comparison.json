@@ -1,0 +1,74 @@
+{
+  "status": "running",
+  "runs": [
+    {
+      "experiment_id": "exp02_training_optimization_seed42",
+      "run_id": "lr_0p001_baseline_reference",
+      "stage": "learning_rate_reference",
+      "seed": 42,
+      "training_duration_seconds": 4839.9,
+      "best_epoch": 19,
+      "best_validation_accuracy": 0.6116335771508186,
+      "best_validation_macro_f1": 0.5656862732124532,
+      "best_validation_loss": 1.2488829759677833,
+      "checkpoint": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\deep_attention_fer2013.pt",
+      "reused_baseline_checkpoint": true,
+      "final_test_metrics": null,
+      "observations": "Existing Experiment 1 checkpoint; validation macro F1 recomputed now. Per-epoch macro F1 was not recorded historically and is intentionally left missing.",
+      "checkpoint_path": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\deep_attention_fer2013.pt"
+    },
+    {
+      "experiment_id": "exp02_training_optimization_seed42",
+      "run_id": "lr_0p0005",
+      "stage": "learning_rate",
+      "seed": 42,
+      "training_duration_seconds": 3588.119405400008,
+      "best_epoch": 16,
+      "best_validation_accuracy": 0.61337513061651,
+      "best_validation_macro_f1": 0.5751446305854453,
+      "best_validation_loss": 1.1583676109202685,
+      "checkpoint": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\experiments\\exp02\\runs\\lr_0p0005\\best_validation_checkpoint.pt",
+      "reused_baseline_checkpoint": false,
+      "final_test_metrics": null,
+      "observations": "Newly trained from scratch; checkpoint selected using validation accuracy, macro F1 used only as an accuracy tie-breaker.",
+      "checkpoint_path": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\experiments\\exp02\\runs\\lr_0p0005\\best_validation_checkpoint.pt"
+    },
+    {
+      "experiment_id": "exp02_training_optimization_seed42",
+      "run_id": "lr_0p0020",
+      "stage": "learning_rate",
+      "seed": 42,
+      "training_duration_seconds": 3484.791933600034,
+      "best_epoch": 19,
+      "best_validation_accuracy": 0.5757575757575758,
+      "best_validation_macro_f1": 0.5232908369398036,
+      "best_validation_loss": 1.2114529931889888,
+      "checkpoint": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\experiments\\exp02\\runs\\lr_0p0020\\best_validation_checkpoint.pt",
+      "reused_baseline_checkpoint": false,
+      "final_test_metrics": null,
+      "observations": "Newly trained from scratch; checkpoint selected using validation accuracy, macro F1 used only as an accuracy tie-breaker.",
+      "checkpoint_path": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\experiments\\exp02\\runs\\lr_0p0020\\best_validation_checkpoint.pt"
+    },
+    {
+      "experiment_id": "exp02_training_optimization_seed42",
+      "run_id": "scheduler_cosine_annealing_lr_0p0005",
+      "stage": "scheduler",
+      "seed": 42,
+      "training_duration_seconds": 3429.303305700014,
+      "best_epoch": 18,
+      "best_validation_accuracy": 0.608498780912574,
+      "best_validation_macro_f1": 0.5619344605935351,
+      "best_validation_loss": 1.1459930561137757,
+      "checkpoint": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\experiments\\exp02\\runs\\scheduler_cosine_annealing_lr_0p0005\\best_validation_checkpoint.pt",
+      "reused_baseline_checkpoint": false,
+      "final_test_metrics": null,
+      "observations": "Newly trained from scratch; checkpoint selected using validation accuracy, macro F1 used only as an accuracy tie-breaker.",
+      "checkpoint_path": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deep_attention\\experiments\\exp02\\runs\\scheduler_cosine_annealing_lr_0p0005\\best_validation_checkpoint.pt"
+    }
+  ],
+  "selection_metric_order": [
+    "validation_accuracy",
+    "validation_macro_f1"
+  ],
+  "official_test_evaluation_performed": false
+}

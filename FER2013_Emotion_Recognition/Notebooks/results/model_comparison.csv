@@ -1,0 +1,4 @@
+Architecture,Test Accuracy (%),Macro-Precision,Macro-Recall,Macro-F1,Weighted-F1,ROC-AUC,Params (M),Size (MB),Train Time (min)
+efficientnet_b3,64.77%,0.6018,0.6354,0.6113,0.6437,0.9058,10.71,41.4,1628.1
+vit_b_16,69.31%,0.6475,0.6911,0.6581,0.6941,0.9042,85.80,327.4,2298.1
+convnext_tiny,69.38%,0.6519,0.6907,0.6657,0.6928,0.9181,27.83,106.2,486.3

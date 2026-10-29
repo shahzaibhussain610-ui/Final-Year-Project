@@ -1,0 +1,2 @@
+dataset,angry,disgust,fear,happy,sad,surprise,neutral,total,imbalance (max/min>0)
+FER2013,4953,547,5121,8989,6077,4002,6198,35887,16.4

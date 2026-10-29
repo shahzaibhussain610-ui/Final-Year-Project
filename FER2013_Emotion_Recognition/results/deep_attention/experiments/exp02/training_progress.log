@@ -1,0 +1,76 @@
+Starting exp02_training_optimization_seed42 on cpu; planned five training runs. Validation metrics only.
+Recorded lr_0p001_baseline_reference: val_accuracy=0.6116, val_macro_f1=0.5657
+
+=== lr_0p0005: lr=0.0005, scheduler=reduce_on_plateau, epochs<=20, patience=5 ===
+Epoch 01/20 |  264.1s | train loss 1.8462 acc 0.2419 | val loss 1.7697 acc 0.3420 macroF1 0.2290 | lr 5.00e-04 | checkpoint saved
+Epoch 02/20 |  121.3s | train loss 1.5973 acc 0.3836 | val loss 1.5500 acc 0.4490 macroF1 0.3667 | lr 5.00e-04 | checkpoint saved
+Epoch 03/20 |  106.4s | train loss 1.4560 acc 0.4471 | val loss 1.4600 acc 0.4493 macroF1 0.3861 | lr 5.00e-04 | checkpoint saved
+Epoch 04/20 |  108.7s | train loss 1.3779 acc 0.4718 | val loss 1.4425 acc 0.4814 macroF1 0.3905 | lr 5.00e-04 | checkpoint saved
+Epoch 05/20 |  107.6s | train loss 1.3279 acc 0.4928 | val loss 1.4274 acc 0.5158 macroF1 0.4395 | lr 5.00e-04 | checkpoint saved
+Epoch 06/20 |  106.8s | train loss 1.3011 acc 0.5009 | val loss 1.3670 acc 0.5040 macroF1 0.4047 | lr 5.00e-04 | 
+Epoch 07/20 |  114.4s | train loss 1.2587 acc 0.5180 | val loss 1.3960 acc 0.4786 macroF1 0.4488 | lr 5.00e-04 | 
+Epoch 08/20 |  117.7s | train loss 1.2321 acc 0.5307 | val loss 1.4786 acc 0.5340 macroF1 0.4699 | lr 5.00e-04 | checkpoint saved
+Epoch 09/20 |  431.0s | train loss 1.1913 acc 0.5447 | val loss 1.3866 acc 0.5409 macroF1 0.4926 | lr 5.00e-04 | checkpoint saved
+Epoch 10/20 |   74.8s | train loss 1.1628 acc 0.5519 | val loss 1.3174 acc 0.4758 macroF1 0.4297 | lr 5.00e-04 | 
+Epoch 11/20 |  114.8s | train loss 1.1518 acc 0.5601 | val loss 1.1953 acc 0.5893 macroF1 0.5245 | lr 5.00e-04 | checkpoint saved
+Epoch 12/20 |  221.9s | train loss 1.1277 acc 0.5680 | val loss 1.3406 acc 0.5855 macroF1 0.5099 | lr 5.00e-04 | 
+Epoch 13/20 |  232.1s | train loss 1.1142 acc 0.5762 | val loss 1.2180 acc 0.5650 macroF1 0.5019 | lr 5.00e-04 | 
+Epoch 14/20 |  215.7s | train loss 1.0900 acc 0.5789 | val loss 1.2250 acc 0.5866 macroF1 0.5237 | lr 5.00e-04 | 
+Epoch 15/20 |  213.2s | train loss 1.0747 acc 0.5844 | val loss 1.2162 acc 0.5737 macroF1 0.5457 | lr 5.00e-04 | 
+Epoch 16/20 |  219.6s | train loss 1.0204 acc 0.6050 | val loss 1.1584 acc 0.6134 macroF1 0.5751 | lr 2.50e-04 | checkpoint saved
+Epoch 17/20 |  204.5s | train loss 0.9868 acc 0.6119 | val loss 1.1726 acc 0.6082 macroF1 0.5569 | lr 2.50e-04 | 
+Epoch 18/20 |  202.9s | train loss 0.9799 acc 0.6170 | val loss 1.0995 acc 0.6050 macroF1 0.5536 | lr 2.50e-04 | 
+Epoch 19/20 |  204.5s | train loss 0.9640 acc 0.6170 | val loss 1.1692 acc 0.5921 macroF1 0.5568 | lr 2.50e-04 | 
+Epoch 20/20 |  205.9s | train loss 0.9556 acc 0.6228 | val loss 1.2039 acc 0.6057 macroF1 0.5599 | lr 2.50e-04 | 
+Recorded lr_0p0005: val_accuracy=0.6134, val_macro_f1=0.5751
+
+=== lr_0p0020: lr=0.002, scheduler=reduce_on_plateau, epochs<=20, patience=5 ===
+Epoch 01/20 |  201.7s | train loss 1.8921 acc 0.2029 | val loss 1.9429 acc 0.1738 macroF1 0.1041 | lr 2.00e-03 | checkpoint saved
+Epoch 02/20 |  206.8s | train loss 1.7368 acc 0.3184 | val loss 1.7147 acc 0.3006 macroF1 0.2258 | lr 2.00e-03 | checkpoint saved
+Epoch 03/20 |  203.2s | train loss 1.6271 acc 0.3818 | val loss 1.5863 acc 0.3978 macroF1 0.3400 | lr 2.00e-03 | checkpoint saved
+Epoch 04/20 |  203.7s | train loss 1.5366 acc 0.4224 | val loss 1.4440 acc 0.4312 macroF1 0.3588 | lr 2.00e-03 | checkpoint saved
+Epoch 05/20 |  202.3s | train loss 1.4570 acc 0.4444 | val loss 1.5366 acc 0.4486 macroF1 0.3521 | lr 2.00e-03 | checkpoint saved
+Epoch 06/20 |  174.7s | train loss 1.4137 acc 0.4593 | val loss 1.4020 acc 0.4984 macroF1 0.4318 | lr 2.00e-03 | checkpoint saved
+Epoch 07/20 |  172.6s | train loss 1.3957 acc 0.4690 | val loss 1.3289 acc 0.5228 macroF1 0.4643 | lr 2.00e-03 | checkpoint saved
+Epoch 08/20 |  167.5s | train loss 1.3541 acc 0.4844 | val loss 2.1276 acc 0.4051 macroF1 0.3022 | lr 2.00e-03 | 
+Epoch 09/20 |  176.7s | train loss 1.3068 acc 0.4997 | val loss 1.3300 acc 0.5232 macroF1 0.4737 | lr 2.00e-03 | checkpoint saved
+Epoch 10/20 |  185.7s | train loss 1.2786 acc 0.5064 | val loss 1.2912 acc 0.5089 macroF1 0.4609 | lr 2.00e-03 | 
+Epoch 11/20 |  166.6s | train loss 1.2578 acc 0.5186 | val loss 1.2929 acc 0.5479 macroF1 0.4865 | lr 2.00e-03 | checkpoint saved
+Epoch 12/20 |  166.7s | train loss 1.2480 acc 0.5252 | val loss 1.4242 acc 0.4967 macroF1 0.4558 | lr 2.00e-03 | 
+Epoch 13/20 |  216.1s | train loss 1.2164 acc 0.5345 | val loss 1.3787 acc 0.5308 macroF1 0.4676 | lr 2.00e-03 | 
+Epoch 14/20 |  199.6s | train loss 1.2031 acc 0.5355 | val loss 1.1869 acc 0.5556 macroF1 0.4998 | lr 2.00e-03 | checkpoint saved
+Epoch 15/20 |  170.5s | train loss 1.1731 acc 0.5494 | val loss 1.2224 acc 0.5420 macroF1 0.4836 | lr 2.00e-03 | 
+Epoch 16/20 |  167.0s | train loss 1.1542 acc 0.5575 | val loss 1.2294 acc 0.5664 macroF1 0.4979 | lr 2.00e-03 | checkpoint saved
+Epoch 17/20 |  171.4s | train loss 1.1429 acc 0.5594 | val loss 1.2550 acc 0.5462 macroF1 0.4698 | lr 2.00e-03 | 
+Epoch 18/20 |  167.6s | train loss 1.1172 acc 0.5677 | val loss 1.1872 acc 0.5629 macroF1 0.5102 | lr 2.00e-03 | 
+Epoch 19/20 |  164.1s | train loss 1.0644 acc 0.5842 | val loss 1.2115 acc 0.5758 macroF1 0.5233 | lr 1.00e-03 | checkpoint saved | EARLY STOP
+Recorded lr_0p0020: val_accuracy=0.5758, val_macro_f1=0.5233
+
+=== scheduler_cosine_annealing_lr_0p0005: lr=0.0005, scheduler=cosine_annealing, epochs<=20, patience=5 ===
+Epoch 01/20 |  164.2s | train loss 1.8462 acc 0.2419 | val loss 1.7697 acc 0.3420 macroF1 0.2290 | lr 5.00e-04 | checkpoint saved
+Epoch 02/20 |  163.5s | train loss 1.5974 acc 0.3816 | val loss 1.5807 acc 0.4138 macroF1 0.3478 | lr 4.97e-04 | checkpoint saved
+Epoch 03/20 |  162.0s | train loss 1.4523 acc 0.4473 | val loss 1.5242 acc 0.3905 macroF1 0.3423 | lr 4.88e-04 | 
+Epoch 04/20 |  162.5s | train loss 1.3699 acc 0.4780 | val loss 1.4229 acc 0.4908 macroF1 0.3961 | lr 4.73e-04 | checkpoint saved
+Epoch 05/20 |  162.2s | train loss 1.3215 acc 0.4901 | val loss 1.3777 acc 0.5291 macroF1 0.4708 | lr 4.52e-04 | checkpoint saved
+Epoch 06/20 |  163.3s | train loss 1.2880 acc 0.5033 | val loss 1.4024 acc 0.5298 macroF1 0.4585 | lr 4.27e-04 | checkpoint saved
+Epoch 07/20 |  162.0s | train loss 1.2543 acc 0.5196 | val loss 1.2763 acc 0.5266 macroF1 0.4937 | lr 3.97e-04 | 
+Epoch 08/20 |  162.8s | train loss 1.2137 acc 0.5344 | val loss 1.3720 acc 0.5709 macroF1 0.4906 | lr 3.64e-04 | checkpoint saved
+Epoch 09/20 |  162.5s | train loss 1.1652 acc 0.5469 | val loss 1.3397 acc 0.5740 macroF1 0.5250 | lr 3.28e-04 | checkpoint saved
+Epoch 10/20 |  162.2s | train loss 1.1364 acc 0.5617 | val loss 1.2043 acc 0.5733 macroF1 0.5330 | lr 2.90e-04 | 
+Epoch 11/20 |  161.9s | train loss 1.1099 acc 0.5689 | val loss 1.2813 acc 0.5785 macroF1 0.5005 | lr 2.51e-04 | checkpoint saved
+Epoch 12/20 |  163.1s | train loss 1.0784 acc 0.5846 | val loss 1.1474 acc 0.5956 macroF1 0.5366 | lr 2.11e-04 | checkpoint saved
+Epoch 13/20 |  162.7s | train loss 1.0559 acc 0.5940 | val loss 1.1520 acc 0.5824 macroF1 0.5448 | lr 1.73e-04 | 
+Epoch 14/20 |  162.6s | train loss 1.0240 acc 0.5997 | val loss 1.1552 acc 0.5998 macroF1 0.5527 | lr 1.37e-04 | checkpoint saved
+Epoch 15/20 |  163.8s | train loss 1.0043 acc 0.6090 | val loss 1.1488 acc 0.5946 macroF1 0.5508 | lr 1.04e-04 | 
+Epoch 16/20 |  174.0s | train loss 0.9900 acc 0.6113 | val loss 1.1345 acc 0.6029 macroF1 0.5525 | lr 7.41e-05 | checkpoint saved
+Epoch 17/20 |  248.6s | train loss 0.9708 acc 0.6120 | val loss 1.1385 acc 0.6054 macroF1 0.5616 | lr 4.87e-05 | checkpoint saved
+Epoch 18/20 |  185.1s | train loss 0.9621 acc 0.6198 | val loss 1.1460 acc 0.6085 macroF1 0.5619 | lr 2.82e-05 | checkpoint saved
+Epoch 19/20 |  190.2s | train loss 0.9601 acc 0.6215 | val loss 1.1457 acc 0.6040 macroF1 0.5638 | lr 1.32e-05 | 
+Epoch 20/20 |  190.0s | train loss 0.9497 acc 0.6252 | val loss 1.1428 acc 0.6050 macroF1 0.5627 | lr 4.07e-06 | 
+Recorded scheduler_cosine_annealing_lr_0p0005: val_accuracy=0.6085, val_macro_f1=0.5619
+
+=== duration_30ep_pat5: lr=0.0005, scheduler=reduce_on_plateau, epochs<=30, patience=5 ===
+Epoch 01/30 |  195.4s | train loss 1.8462 acc 0.2419 | val loss 1.7697 acc 0.3420 macroF1 0.2290 | lr 5.00e-04 | checkpoint saved
+Epoch 02/30 |  200.0s | train loss 1.5973 acc 0.3836 | val loss 1.5500 acc 0.4490 macroF1 0.3667 | lr 5.00e-04 | checkpoint saved
+Epoch 03/30 |  192.8s | train loss 1.4560 acc 0.4471 | val loss 1.4600 acc 0.4493 macroF1 0.3861 | lr 5.00e-04 | checkpoint saved
+Epoch 04/30 |  132.9s | train loss 1.3779 acc 0.4718 | val loss 1.4425 acc 0.4814 macroF1 0.3905 | lr 5.00e-04 | checkpoint saved

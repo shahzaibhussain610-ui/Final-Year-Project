@@ -1,0 +1,32 @@
+{
+  "vit": {
+    "best_epoch": 18,
+    "best_validation_value": 0.6930816031496285,
+    "test_accuracy": 0.710225689607133,
+    "test_macro_f1": 0.7050877226832947,
+    "cpu_benchmark": {
+      "latency_ms_per_image": 33.987198999966495,
+      "throughput_images_per_second": 29.422842406077237
+    }
+  },
+  "efficientnet_b2": {
+    "best_epoch": 17,
+    "best_validation_value": 0.7058475370853446,
+    "test_accuracy": 0.7191418222346058,
+    "test_macro_f1": 0.7203200830547185,
+    "cpu_benchmark": {
+      "latency_ms_per_image": 12.637863000272773,
+      "throughput_images_per_second": 79.12730182139308
+    }
+  },
+  "resnet50": {
+    "best_epoch": 15,
+    "best_validation_value": 0.6913627400074521,
+    "test_accuracy": 0.7177486765115632,
+    "test_macro_f1": 0.7040117209278479,
+    "cpu_benchmark": {
+      "latency_ms_per_image": 15.230387999908999,
+      "throughput_images_per_second": 65.6582091018282
+    }
+  }
+}

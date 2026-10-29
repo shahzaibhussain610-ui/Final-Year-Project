@@ -1,0 +1,12 @@
+Metric,Result
+Test accuracy,0.6128
+Precision (macro),0.5742
+Recall (macro),0.6065
+F1-Score (macro),0.5797
+F1-Score (weighted),0.6064
+Test loss,1.0268
+Best val. accuracy,0.6127 (epoch 21)
+Parameters,"1,262,861"
+Inference time,61.06 ms/image on cpu
+Epochs run,23 / 60
+Dataset,"25,838 train / 2,871 val / 7,178 test"

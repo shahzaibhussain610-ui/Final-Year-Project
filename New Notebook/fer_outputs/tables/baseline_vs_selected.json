@@ -1,0 +1,19 @@
+{
+ "baseline_acc": 0.6868208414600168,
+ "baseline_macro_f1": 0.6635263307430586,
+ "selected_acc": 0.7071607690164391,
+ "selected_macro_f1": 0.6884957141278314,
+ "delta_acc": 0.020339927556422333,
+ "delta_macro_f1": 0.024969383384772836,
+ "ci95_delta_macro_f1": [
+  0.006498309864571764,
+  0.04288297986078155
+ ],
+ "ci95_delta_acc": [
+  0.006129841181387596,
+  0.0334424630816383
+ ],
+ "mcnemar_selected_only_correct": 376,
+ "mcnemar_baseline_only_correct": 303,
+ "mcnemar_p": 0.005725409869446696
+}

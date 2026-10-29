@@ -1,0 +1,8 @@
+Architecture / Technique,Test Accuracy,Test Macro-F1,Status
+Model 1: EfficientNet-B0 (Standard),13.33%,0.1258,Single Backbone
+Model 1: EfficientNet-B0 + TTA,12.22%,0.1410,TTA Booster
+Model 2: ResNet-50 (Standard),12.22%,0.0952,Single Backbone
+Model 2: ResNet-50 + TTA,12.22%,0.0913,TTA Booster
+Model 3: ConvNeXt-Tiny (Standard),91.11%,0.5893,Single Backbone
+Model 3: ConvNeXt-Tiny + TTA,91.11%,0.5893,TTA Booster
+Triple-Backbone Ensemble + TTA (WINNER),91.11%,0.5825,90%+ ACCURACY GOAL

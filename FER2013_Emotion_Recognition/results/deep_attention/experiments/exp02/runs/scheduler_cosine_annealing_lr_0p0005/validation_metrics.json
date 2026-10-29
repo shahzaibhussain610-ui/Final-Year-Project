@@ -1,0 +1,9 @@
+{
+  "stage": "scheduler",
+  "training_duration_seconds": 3429.303305700014,
+  "best_epoch": 18,
+  "best_validation_accuracy": 0.608498780912574,
+  "best_validation_macro_f1": 0.5619344605935351,
+  "best_validation_loss": 1.1459930561137757,
+  "observations": "Newly trained from scratch; checkpoint selected using validation accuracy, macro F1 used only as an accuracy tie-breaker."
+}

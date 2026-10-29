@@ -1,0 +1,96 @@
+project:
+  name: "Unified_FER_Multi_Pipeline"
+  seed: 42
+  device: "cuda"
+  num_workers: 0  # Set to 0 on Windows to avoid Jupyter multiprocessing deadlocks
+  mixed_precision: true
+  output_dir: "./outputs"
+
+datasets:
+  use_fer2013: true
+  use_affectnet: true
+  use_ckplus: true
+  use_ravdess: true
+  paths:
+    fer2013_dir: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\FER2013"
+    affectnet_dir: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\AffectNet+"
+    ckplus_dir: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\CK+"
+    ravdess_dir: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Voice and Facial\\RAVDESS"
+
+emotions:
+  mode: "7_class"
+  classes_7: ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
+  classes_4: ["angry", "happy", "neutral", "sad"]
+  label_mapping:
+    "0": "angry"
+    "1": "disgust"
+    "2": "fear"
+    "3": "happy"
+    "4": "sad"
+    "5": "surprise"
+    "6": "neutral"
+    "anger": "angry"
+    "angry": "angry"
+    "Angry": "angry"
+    "disgust": "disgust"
+    "Disgust": "disgust"
+    "fear": "fear"
+    "Fear": "fear"
+    "happiness": "happy"
+    "happy": "happy"
+    "Happy": "happy"
+    "sadness": "sad"
+    "sad": "sad"
+    "Sad": "sad"
+    "surprise": "surprise"
+    "Surprise": "surprise"
+    "neutral": "neutral"
+    "Neutral": "neutral"
+    "calm": "neutral"
+    "contempt": "disgust"
+
+preprocessing:
+  image_size: 224
+  augmentation:
+    horizontal_flip_prob: 0.5
+    rotation_degrees: 15
+    perspective_warp_prob: 0.3
+    motion_blur_prob: 0.25
+    color_jitter:
+      brightness: 0.3
+      contrast: 0.3
+      saturation: 0.2
+    random_erasing_prob: 0.25
+    use_mixup_cutmix: true
+    mixup_alpha: 0.2
+
+model:
+  architecture: "deep_ensemble"
+  pretrained: true
+  dropout_rate: 0.35
+
+training:
+  strategy: "two_stage"
+  epochs: 25
+  batch_size: 64
+  lr: 0.0003
+  weight_decay: 0.005
+  val_split_ratio: 0.15
+  optimizer: "radam"
+  label_smoothing: 0.1
+  focal_gamma: 2.0
+  early_stopping_patience: 6
+  stage1_pretrain:
+    epochs: 15
+    batch_size: 64
+    lr: 0.0003
+    weight_decay: 0.01
+  stage2_finetune:
+    epochs: 25
+    batch_size: 32
+    lr: 0.0001
+    weight_decay: 0.005
+
+inference:
+  use_tta: true
+  temporal_window_fps: 5

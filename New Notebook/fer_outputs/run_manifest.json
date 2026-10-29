@@ -1,0 +1,53 @@
+{
+  "created": "2026-10-21 02:54:39",
+  "code_version": "1.0",
+  "profile": "quick",
+  "profile_settings": {
+    "max_per_class_train": null,
+    "max_per_class_eval": null,
+    "max_videos_per_dataset": null,
+    "epochs_baseline": 15,
+    "epochs_ablation": 12,
+    "epochs_arch": 20,
+    "epochs_final": 20,
+    "img_size": 112,
+    "img_size_candidates": [
+      112
+    ],
+    "seeds_final": [
+      0
+    ],
+    "batch_size": 128,
+    "patience": 6,
+    "arch_candidates": [
+      "resnet50",
+      "convnext_tiny",
+      "efficientnet_b0",
+      "vit_small_patch16_224",
+      "hybrid_cnn_transformer",
+      "mobilenetv3_large_100",
+      "custom_attn_cnn"
+    ],
+    "top_k_multiseed": 1,
+    "on_pretrained_fail": "skip"
+  },
+  "python": "3.11.9",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "torch": "2.14.1+cpu",
+  "torchvision": "0.29.1+cpu",
+  "timm": "1.0.30",
+  "opencv": "5.0.0",
+  "numpy": "2.4.6",
+  "pandas": "3.0.6",
+  "device": "cpu",
+  "gpu": null,
+  "amp": false,
+  "paths": {
+    "FER2013_CSV": "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\FER2013 CSV\\fer2013.csv",
+    "FER2013_DIR": "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\FER2013",
+    "FERPLUS_CSV": null,
+    "CKPLUS_DIR": null,
+    "RAVDESS_DIR": null,
+    "CREMAD_DIR": "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Voice and Facial\\CREMA-D"
+  }
+}

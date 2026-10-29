@@ -1,0 +1,9 @@
+{
+  "stage": "learning_rate",
+  "training_duration_seconds": 3484.791933600034,
+  "best_epoch": 19,
+  "best_validation_accuracy": 0.5757575757575758,
+  "best_validation_macro_f1": 0.5232908369398036,
+  "best_validation_loss": 1.2114529931889888,
+  "observations": "Newly trained from scratch; checkpoint selected using validation accuracy, macro F1 used only as an accuracy tie-breaker."
+}

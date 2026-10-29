@@ -1,0 +1,200 @@
+{
+ "exp_id": "B3_no_mixup_cutmix",
+ "stage": "B",
+ "note": "no_mixup_cutmix",
+ "model": "resnet18",
+ "seed": 0,
+ "cfg": {
+  "model": "resnet18",
+  "recipe": {
+   "epochs": 12,
+   "batch_size": 128,
+   "img_size": 112,
+   "aug": "strong",
+   "label_smoothing": 0.1,
+   "imbalance": "none",
+   "mixup_alpha": 0.0,
+   "cutmix_alpha": 0.0,
+   "mix_prob": 0.5,
+   "mix_off_last_frac": 0.15,
+   "lr_backbone": null,
+   "lr_head": null,
+   "weight_decay": 0.05,
+   "schedule": "cosine",
+   "warmup_epochs": 1.0,
+   "ema_decay": 0.999,
+   "grad_clip": 1.0,
+   "drop_path": 0.1,
+   "patience": 6,
+   "regime": "finetune",
+   "label_source": "fer2013",
+   "imbalance_power": null
+  },
+  "seed": 0,
+  "pretrained": true,
+  "lr_backbone": 0.0003,
+  "lr_head": 0.001,
+  "train_fp": "84d9cf1b587d",
+  "val_fp": "3e5c7b34c709",
+  "code": "1.0",
+  "profile": "quick"
+ },
+ "cfg_hash": "aa55153bde08",
+ "recipe": {
+  "epochs": 12,
+  "batch_size": 128,
+  "img_size": 112,
+  "aug": "strong",
+  "label_smoothing": 0.1,
+  "imbalance": "none",
+  "mixup_alpha": 0.0,
+  "cutmix_alpha": 0.0,
+  "mix_prob": 0.5,
+  "mix_off_last_frac": 0.15,
+  "lr_backbone": null,
+  "lr_head": null,
+  "weight_decay": 0.05,
+  "schedule": "cosine",
+  "warmup_epochs": 1.0,
+  "ema_decay": 0.999,
+  "grad_clip": 1.0,
+  "drop_path": 0.1,
+  "patience": 6,
+  "regime": "finetune",
+  "label_source": "fer2013",
+  "imbalance_power": null
+ },
+ "pretrained_loaded": true,
+ "params_m": 11.180103,
+ "best_epoch": 11,
+ "epochs_run": 12,
+ "train_minutes": 63.62468583583832,
+ "val": {
+  "acc": 0.6216216216216216,
+  "bal_acc": 0.5295280214830497,
+  "macro_f1": 0.527317430019836,
+  "weighted_f1": 0.6103956135828176,
+  "macro_precision": 0.6206328149263225,
+  "macro_recall": 0.5295280214830497,
+  "nll": 1.0218287706375122,
+  "ece": 0.03447473632920648,
+  "per_class": {
+   "angry": {
+    "precision": 0.5133587786259542,
+    "recall": 0.576017130620985,
+    "f1": 0.5428859737638748,
+    "support": 467
+   },
+   "disgust": {
+    "precision": 0.75,
+    "recall": 0.05357142857142857,
+    "f1": 0.1,
+    "support": 56
+   },
+   "fear": {
+    "precision": 0.47530864197530864,
+    "recall": 0.31048387096774194,
+    "f1": 0.375609756097561,
+    "support": 496
+   },
+   "happy": {
+    "precision": 0.8189563365282215,
+    "recall": 0.8592178770949721,
+    "f1": 0.8386041439476554,
+    "support": 895
+   },
+   "sad": {
+    "precision": 0.5320623916811091,
+    "recall": 0.47013782542113325,
+    "f1": 0.4991869918699187,
+    "support": 653
+   },
+   "surprise": {
+    "precision": 0.7276995305164319,
+    "recall": 0.7469879518072289,
+    "f1": 0.737217598097503,
+    "support": 415
+   },
+   "neutral": {
+    "precision": 0.5270440251572327,
+    "recall": 0.6902800658978583,
+    "f1": 0.5977175463623395,
+    "support": 607
+   }
+  },
+  "cm": [
+   [
+    269,
+    1,
+    34,
+    31,
+    56,
+    18,
+    58
+   ],
+   [
+    35,
+    3,
+    4,
+    4,
+    6,
+    1,
+    3
+   ],
+   [
+    66,
+    0,
+    154,
+    20,
+    111,
+    64,
+    81
+   ],
+   [
+    23,
+    0,
+    11,
+    769,
+    11,
+    17,
+    64
+   ],
+   [
+    83,
+    0,
+    57,
+    41,
+    307,
+    10,
+    155
+   ],
+   [
+    16,
+    0,
+    40,
+    23,
+    11,
+    310,
+    15
+   ],
+   [
+    32,
+    0,
+    24,
+    51,
+    75,
+    6,
+    419
+   ]
+  ]
+ },
+ "collapsed": false,
+ "max_class_share": 0.261632766787406,
+ "ckpt_sha256": "b29b5385a628e628e7e84d4fe026e1d5cd747886bd940cc9017cbb2b3f328d34",
+ "env": {
+  "device": "cpu",
+  "gpu": null,
+  "torch": "2.14.1+cpu",
+  "timm": "1.0.30"
+ }
+}

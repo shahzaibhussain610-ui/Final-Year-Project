@@ -1,0 +1,195 @@
+# =============================================================================
+# Facial Emotion Recognition (FER) — GPU 90%+ Research Configuration
+# Fully Aligned with NewNotebook2.ipynb (CK+ • RAVDESS • FER2013 • AffectNet+)
+# Architectures: EfficientNet-B0 • ConvNeXt-Tiny • DAN-ResNet50 • ViT-B/16 • DeepFace
+# =============================================================================
+
+environment:
+  experiment_name: "fer_gpu_90plus"
+  seed: 42
+  device: "cuda:0"                       # Strict CUDA GPU acceleration
+  allow_mps: false
+  deterministic: false                   # Allows cuDNN autotuner for maximum speed
+  cudnn_benchmark: true
+  mixed_precision:
+    enabled: true                        # Native torch.amp FP16 mixed precision
+    dtype: "float16"
+  max_gpu_memory_fraction: 0.95
+  batch_size: 64
+  dataloader:
+    num_workers: 0                       # Set to 0 for Windows Jupyter stability
+    pin_memory: true
+    persistent_workers: false
+
+paths:
+  data_root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets"
+  ckplus_root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\CK+"
+  fer2013_root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\FER2013"
+  ravdess_root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Voice and Facial\\RAVDESS"
+  affectnet_root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\AffectNet+"
+  output_dir: "./outputs_gpu"
+  checkpoint_dir: "./checkpoints_gpu"
+  cache_dir: "./cache_gpu"
+  results_dir: "./results_gpu"
+
+datasets:
+  ckplus:
+    enabled: true
+    root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\CK+"
+    file: "ckextended.csv"
+    format: "pixel_str"
+    stratified_split:
+      train: 0.80
+      val: 0.10
+      test: 0.10
+    note: "Stratified holdout eliminates zero-class depletion for Fear and Surprise"
+
+  ravdess:
+    enabled: true
+    root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Voice and Facial\\RAVDESS"
+    total_actors: 24
+    actor_holdout:
+      train: "Actor 01-18"
+      val: "Actor 19-21"
+      test: "Actor 22-24"
+    frame_fractions: [0.45, 0.55, 0.65]  # Peak emotional expressions
+    face_detection: "haar_cascade"
+
+  fer2013:
+    enabled: true
+    root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\FER2013"
+    train_dir: "train"
+    test_dir: "test"
+    val_fraction: 0.10
+
+  affectnet:
+    enabled: true
+    base_root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\AffectNet+"
+    root: "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\AffectNet+\\human_annotated"
+    max_samples_per_class: 12000
+
+label_mapping:
+  canonical_classes:
+    - "angry"
+    - "disgust"
+    - "fear"
+    - "happy"
+    - "sad"
+    - "surprise"
+    - "neutral"
+
+preprocessing:
+  color_mode: "rgb"
+  input_resolution: 224
+  normalization: "imagenet"
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+models:
+  defaults:
+    pretrained: true
+    pretrained_source: "timm"
+    head:
+      type: "mlp"                        # 2-layer MLP head
+      hidden_dim: 512
+      norm: "layernorm"
+      activation: "gelu"
+      dropout: 0.3
+  architectures:
+    efficientnet_b0:
+      enabled: true
+      timm_name: "efficientnet_b0"
+      input_size: 224
+      description: "Compound scaled convolutional backbone"
+    convnext_tiny:
+      enabled: true
+      timm_name: "convnext_tiny"
+      input_size: 224
+      description: "Modernized 7x7 depthwise convolutional architecture"
+    dan_resnet50:
+      enabled: true
+      timm_name: "resnet50"
+      num_heads: 4
+      input_size: 224
+      description: "Distract your Attention Network with multi-head spatial attention"
+    vit_base_16:
+      enabled: true
+      timm_name: "vit_base_patch16_224"
+      input_size: 224
+      description: "Vision Transformer with global patch self-attention"
+    deepface:
+      enabled: true
+      mode: "zero_shot"
+      description: "Pretrained DeepFace zero-shot facial attribute analyzer"
+
+training:
+  epochs: 30
+  batch_size: 64
+  optimizer:
+    name: "adamw"
+    backbone_lr: 0.0001                  # Discriminative LR for pretrained backbone
+    head_lr: 0.0003                      # LR for MLP head & attention module
+    weight_decay: 0.05
+  scheduler:
+    name: "cosine"
+    eta_min: 0.00001
+  gradient_clipping:
+    enabled: true
+    max_norm: 5.0
+  early_stopping:
+    enabled: true
+    patience: 8
+    min_delta: 0.001
+    selection_metric: "val_macro_f1"
+
+loss:
+  name: "focal_loss"
+  gamma: 2.0                             # (1 - pt)^gamma * CE prevents majority dominance
+  reduction: "mean"
+  balanced_sampling: true
+  sampler: "WeightedRandomSampler"       # Equal 1/7 representation per mini-batch
+  notes: "Focal loss and WeightedRandomSampler eliminate 0.00 accuracy on minority classes (Fear and Surprise)"
+
+augmentation:
+  preset: "standard"
+  train:
+    resize: 224
+    random_resized_crop:
+      scale: [0.85, 1.0]
+      ratio: [0.95, 1.05]
+    horizontal_flip_prob: 0.5
+    rotation_degrees: 12
+    color_jitter:
+      brightness: 0.2
+      contrast: 0.2
+      saturation: 0.15
+    random_erasing_prob: 0.20
+    random_erasing_scale: [0.02, 0.08]
+  eval:
+    resize: 224
+
+optimization:
+  tta:
+    enabled: true                        # Test-Time Augmentation
+    transforms: ["identity", "hflip"]
+  ensemble:
+    enabled: true                        # Soft-Voting Quad-Ensemble
+    type: "soft_voting"
+    quad_ensemble: true
+    members:
+      - "efficientnet_b0"
+      - "convnext_tiny"
+      - "dan_resnet50"
+      - "vit_base_16"
+    deepface_benchmark: true
+    target_accuracy: "90%+"
+
+evaluation:
+  metrics:
+    - "accuracy"
+    - "macro_f1"
+    - "weighted_f1"
+    - "classification_report"
+    - "confusion_matrix"
+  save_confusion_matrix: true
+  confusion_matrix_filename: "ensemble_confusion_matrix.png"

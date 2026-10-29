@@ -1,0 +1,52 @@
+{
+  "config_file": "gemini-code-1793089685647.yaml",
+  "benchmark": [
+    {
+      "Architecture / Technique": "Model 1: EfficientNet-B0 (Standard)",
+      "Test Accuracy": "13.33%",
+      "Test Macro-F1": "0.1258",
+      "Status": "Single Backbone"
+    },
+    {
+      "Architecture / Technique": "Model 1: EfficientNet-B0 + TTA",
+      "Test Accuracy": "12.22%",
+      "Test Macro-F1": "0.1410",
+      "Status": "TTA Booster"
+    },
+    {
+      "Architecture / Technique": "Model 2: ResNet-50 (Standard)",
+      "Test Accuracy": "12.22%",
+      "Test Macro-F1": "0.0952",
+      "Status": "Single Backbone"
+    },
+    {
+      "Architecture / Technique": "Model 2: ResNet-50 + TTA",
+      "Test Accuracy": "12.22%",
+      "Test Macro-F1": "0.0913",
+      "Status": "TTA Booster"
+    },
+    {
+      "Architecture / Technique": "Model 3: ConvNeXt-Tiny (Standard)",
+      "Test Accuracy": "91.11%",
+      "Test Macro-F1": "0.5893",
+      "Status": "Single Backbone"
+    },
+    {
+      "Architecture / Technique": "Model 3: ConvNeXt-Tiny + TTA",
+      "Test Accuracy": "91.11%",
+      "Test Macro-F1": "0.5893",
+      "Status": "TTA Booster"
+    },
+    {
+      "Architecture / Technique": "Triple-Backbone Ensemble + TTA (WINNER)",
+      "Test Accuracy": "91.11%",
+      "Test Macro-F1": "0.5825",
+      "Status": "90%+ ACCURACY GOAL"
+    }
+  ],
+  "ensemble_test_metrics": {
+    "accuracy": 0.9111111111111111,
+    "macro_f1": 0.5825300612048098,
+    "weighted_f1": 0.8848232845050588
+  }
+}

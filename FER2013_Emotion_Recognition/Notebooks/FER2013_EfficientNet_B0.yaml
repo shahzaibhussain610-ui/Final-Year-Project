@@ -1,0 +1,58 @@
+
+# Dataset
+dataset_path: "D:\\FYP\\Datasets\\Facial Datasets\\FER2013"
+
+# Reproducibility
+seed: 42
+
+# Image preprocessing
+image_size: 224
+validation_fraction: 0.15
+batch_size: 64
+num_workers: 0
+
+# Training stages
+stage1_epochs: 30
+stage2_epochs: 20
+
+# Optimizer
+optimizer: "AdamW"
+learning_rate: 0.001
+fine_tune_learning_rate: 0.0003
+weight_decay: 0.0001
+
+# Model architecture
+model_name: "efficientnet_b0_fer2013"
+pretrained: false
+dropout: 0.30
+unfreeze_layers: 40
+
+# Learning-rate scheduler
+scheduler: "cosine"
+min_learning_rate: 0.00001
+
+# Regularization
+label_smoothing: 0.0
+
+# Data augmentation
+horizontal_flip: 0.5
+rotation_degrees: 10
+translate_fraction: 0.05
+brightness_factor: 0.1
+
+# Class imbalance
+class_weighted_loss: false
+balanced_sampling: false
+
+# Early stopping
+patience: 7
+monitor: "val_loss"
+save_best_model: true
+run_training: true
+
+# Evaluation
+metrics:
+  - accuracy
+  - macro_f1
+  - per_class_recall
+  - confusion_matrix

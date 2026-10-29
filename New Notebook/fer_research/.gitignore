@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+data/
+cache/
+checkpoints/
+outputs/
+logs/
+results/
+models/*.onnx
+.ipynb_checkpoints/

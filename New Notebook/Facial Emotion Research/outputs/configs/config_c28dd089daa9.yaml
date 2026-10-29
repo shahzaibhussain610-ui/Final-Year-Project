@@ -1,0 +1,232 @@
+project:
+  name: facial_emotion_research
+  seed: 42
+  deterministic: false
+
+datasets:
+  fer2013:
+    enabled: true
+    format: csv
+    csv_path: "../../Datasets/Facial Dataset/FER2013 CSV/fer2013.csv"
+    image_dir: "../../Datasets/Facial Dataset/FER2013"
+  ferplus:
+    enabled: false
+    csv_path: null
+  ckplus:
+    enabled: false
+    root: "../../Datasets/Facial Dataset/CK+"
+    format: peak_images_or_class_folders
+  ravdess:
+    enabled: true
+    root: "../../Datasets/Voice and Facial/RAVDESS"
+    modality: video
+    modality_codes: ["01", "02"]
+  crema_d:
+    enabled: false
+    root: "../../Datasets/Voice and Facial/CREMA-D"
+    modality: video
+
+label_mapping:
+  class_names: [angry, disgust, fear, happy, sad, surprise, neutral]
+  unsupported_emotions: drop
+  ravdess_calm_policy: drop
+  contempt_policy: drop
+
+splits:
+  fer2013_protocol: auto
+  folder_validation_fraction: 0.10
+  external_train_validation_test: [0.70, 0.15, 0.15]
+
+data_validation:
+  remove_cross_split_duplicates: true
+  near_duplicate_check: true
+  drop_blank_train_images: true
+  fail_on_missing_enabled_dataset: true
+
+preprocessing:
+  cache_size: 48
+  ckplus_peak_frames: 3
+  ckplus_add_neutral_first_frame: true
+
+face_extraction:
+  yunet_model_path: null
+  face_margin: 0.15
+  frames_per_video: 8
+
+models:
+  num_classes: 7
+  ablation_backbone: resnet18
+  enabled_architectures:
+    - efficientnetv2_s
+    - resnet50
+    - convnext_tiny
+    - efficientnet_b0
+    - efficientnet_b2
+    - mobilenetv3_large_100
+    - vit_small_patch16_224
+    - deit_tiny_patch16_224
+    - hybrid_cnn_transformer
+    - custom_attn_cnn
+  selection_metric: val_macro_f1
+  improvement_tolerance: 0.003
+
+initialization:
+  pretrained_default: true
+  prefer_timm_weights: true
+  on_pretrained_failure: skip
+  hsemotion_weights: null
+  scratch_experiments: true
+  fine_tuning_experiments: true
+
+augmentation:
+  enabled: true
+  horizontal_flip_probability: 0.5
+  rotation_degrees: 10
+  zoom_range: [1.0, 1.25]
+  translation_fraction: 0.10
+  brightness_contrast: 0.1
+  random_erasing_probability: 0.25
+  mixup_alpha: 0.2
+  cutmix_alpha: 1.0
+  mix_probability: 0.5
+
+loss:
+  default: cross_entropy
+  label_smoothing: 0.1
+  imbalance_power: 0.5
+  focal_gamma: 2.0
+  compare_cross_entropy_and_focal: true
+
+optimizer:
+  name: adamw
+  learning_rate_backbone: null
+  learning_rate_head: null
+  weight_decay: 0.05
+  sgd_momentum: 0.9
+  gradient_clip_norm: 1.0
+
+scheduler:
+  name: cosine
+  warmup_epochs: 1
+
+training:
+  profile: quick
+  mixed_precision: true
+  profiles:
+    smoke:
+      max_per_class_train: 60
+      max_per_class_eval: 25
+      max_videos_per_dataset: 24
+      epochs_baseline: 2
+      epochs_ablation: 2
+      epochs_arch: 2
+      epochs_final: 2
+      img_size: 48
+      img_size_candidates: [48]
+      seeds_final: [0, 1]
+      batch_size: 32
+      patience: 5
+      arch_candidates: [resnet18, efficientnet_b0, vit_small_patch16_224, hybrid_cnn_transformer, custom_attn_cnn]
+      top_k_multiseed: 2
+      on_pretrained_fail: random
+    quick:
+      max_per_class_train: null
+      max_per_class_eval: null
+      max_videos_per_dataset: null
+      epochs_baseline: 15
+      epochs_ablation: 12
+      epochs_arch: 20
+      epochs_final: 20
+      img_size: 112
+      img_size_candidates: [112]
+      seeds_final: [0]
+      batch_size: 128
+      patience: 6
+      arch_candidates: [resnet50, convnext_tiny, efficientnetv2_s, efficientnet_b0, vit_small_patch16_224, deit_tiny_patch16_224, hybrid_cnn_transformer, mobilenetv3_large_100, custom_attn_cnn]
+      top_k_multiseed: 1
+      on_pretrained_fail: skip
+    full:
+      max_per_class_train: null
+      max_per_class_eval: null
+      max_videos_per_dataset: null
+      epochs_baseline: 30
+      epochs_ablation: 20
+      epochs_arch: 40
+      epochs_final: 40
+      img_size: 112
+      img_size_candidates: [112, 224]
+      seeds_final: [0, 1, 2]
+      batch_size: 128
+      patience: 8
+      arch_candidates: [resnet50, convnext_tiny, efficientnetv2_s, efficientnet_b0, efficientnet_b2, vit_small_patch16_224, deit_tiny_patch16_224, hybrid_cnn_transformer, mobilenetv3_large_100, custom_attn_cnn]
+      top_k_multiseed: 3
+      on_pretrained_fail: skip
+
+hyperparameter_search:
+  enabled: false
+  backend: optuna
+  trials: 20
+  timeout_seconds: null
+  epochs_per_trial: 5
+  metric: val_macro_f1
+  parameters: [learning_rate, weight_decay, label_smoothing, batch_size]
+  search_space:
+    learning_rate: [0.00001, 0.001]
+    weight_decay: [0.0001, 0.1]
+    label_smoothing: [0.0, 0.2]
+    batch_size: [32, 64, 128]
+
+experiments:
+  stages:
+    baseline_reproduction: true
+    recipe_ablation: true
+    training_regime: true
+    architecture_search: true
+    label_source: true
+    multiseed_finalists: true
+    ensemble: true
+    cross_dataset: true
+    robustness: true
+    export_onnx: true
+  enabled_comparisons:
+    - baseline_vs_augmentation
+    - cross_entropy_vs_focal
+    - weighted_loss
+    - adamw_vs_sgd
+    - pretrained_vs_scratch
+    - fer2013_vs_combined_datasets
+    - input_resolution
+    - single_model_vs_ensemble
+
+evaluation:
+  bootstrap_rounds: 1000
+  report_macro_and_weighted_f1: true
+  save_confusion_matrices: true
+  cross_dataset_evaluation: true
+  test_only_after_validation_selection: true
+
+ensemble:
+  enabled: true
+  strategy: probability_average
+  select_members_using: validation_macro_f1
+
+checkpointing:
+  output_dir: ./outputs
+  save_best_by: val_macro_f1
+  save_config_snapshot: true
+  prevent_overwrite: true
+
+deployment:
+  cpu_benchmark: true
+  latency_runs: 50
+  latency_warmup: 10
+  batch_size: 1
+  export_onnx: true
+  verify_export_predictions: true
+
+logging:
+  level: INFO
+  save_csv: true
+  save_json: true
+  save_plots: true
+  save_run_manifest: true

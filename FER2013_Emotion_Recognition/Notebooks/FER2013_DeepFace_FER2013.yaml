@@ -1,0 +1,18 @@
+# Editable settings for FER2013_DeepFace_FER2013.ipynb.
+# Relative output paths are resolved from the notebook's directory.
+
+dataset_path: "D:\\FYP\\Datasets\\Facial Datasets\\FER2013"
+results_dir: "../results/deepface_fer2013"
+model_dir: "../models/deepface_fer2013"
+
+seed: 42
+image_size: 224
+batch_size: 32
+epochs: 60
+learning_rate: 0.01
+dropout: 0.3
+patience: 5
+validation_fraction: 0.15
+num_classes: 7
+model_name: "deepface_fer2013_model"
+run_training: true

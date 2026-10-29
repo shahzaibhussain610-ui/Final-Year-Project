@@ -1,0 +1,9 @@
+{
+  "stage": "learning_rate_reference",
+  "training_duration_seconds": 4839.9,
+  "best_epoch": 19,
+  "best_validation_accuracy": 0.6116335771508186,
+  "best_validation_macro_f1": 0.5656862732124532,
+  "best_validation_loss": 1.2488829759677833,
+  "observations": "Existing Experiment 1 checkpoint; validation macro F1 recomputed now. Per-epoch macro F1 was not recorded historically and is intentionally left missing."
+}

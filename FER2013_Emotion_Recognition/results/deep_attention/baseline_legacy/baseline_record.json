@@ -1,0 +1,127 @@
+{
+  "experiment_id": "baseline_legacy_seed42",
+  "status": "historical_baseline_audit_complete",
+  "audit_scope": "Read-only inspection of notebook source and saved outputs plus pixel-hash audit of the dataset; no retraining and no fresh evaluation.",
+  "sources": {
+    "notebook": "Notebooks/FER2013_Deep_Attention_Network.ipynb",
+    "notebook_sha256_at_audit": "a69ff152f57777c4c085dbb9f8538f53ffc1df73f5ae3bb6a337d4e4bc5e5657",
+    "configuration_snapshot": "baseline_config_snapshot.json",
+    "training_history": "training_history.json",
+    "notebook_training_cell": 37,
+    "notebook_test_evaluation_cell": 43,
+    "notebook_classification_report_cell": 48
+  },
+  "verification": {
+    "saved_notebook_execution_outputs_present": true,
+    "metrics_recomputed_from_predictions": false,
+    "checkpoint_available_at_audit": false,
+    "checkpoint_hash_verified_at_audit": false,
+    "training_rerun": false,
+    "reported_metrics_classification": "Previously reported and present in saved notebook outputs; not independently reproduced from checkpoint predictions.",
+    "historical_checkpoint_metadata": "Previously inspected during this audit; current checkpoint directory is now absent."
+  },
+  "dataset_integrity": {
+    "official_train_images": 28709,
+    "official_test_images": 7178,
+    "train_counts_by_class": {
+      "angry": 3995,
+      "disgust": 436,
+      "fear": 4097,
+      "happy": 7215,
+      "neutral": 4965,
+      "sad": 4830,
+      "surprise": 3171
+    },
+    "test_counts_by_class": {
+      "angry": 958,
+      "disgust": 111,
+      "fear": 1024,
+      "happy": 1774,
+      "neutral": 1233,
+      "sad": 1247,
+      "surprise": 831
+    },
+    "training_validation_split": "Stratified 90/10 split within official train, seed 42; the official test rows are not used by the split code.",
+    "pixel_duplicate_audit": {
+      "comparison": "SHA-256 of decoded grayscale pixel arrays",
+      "train_test_shared_hash_groups": 531,
+      "test_images_in_shared_groups": 568,
+      "shared_groups_with_different_label_sets": 24,
+      "train_internal_duplicate_groups": 1035,
+      "train_internal_duplicate_excess_images": 1236,
+      "train_internal_cross_label_groups": 39,
+      "test_internal_duplicate_groups": 81,
+      "test_internal_duplicate_excess_images": 86,
+      "test_internal_cross_label_groups": 4
+    },
+    "evaluation_independence": "The code keeps test rows out of fitting, validation, checkpoint selection, and early stopping. However, 568 test images have pixel-identical matches in training, so the historical test result is not a fully independent generalization estimate. The dataset itself also contains cross-label duplicate groups."
+  },
+  "architecture": {
+    "summary": "Scratch grayscale CNN: convolutional stem, three residual two-convolution feature blocks at 64/128/256 channels; sequential CBAM channel and spatial attention in each block; global average pooling; 256-to-128 dense head with dropout; seven logits.",
+    "trainable_parameters": 1262861,
+    "attention_mechanism": "Channel attention combines global average- and max-pooled descriptors with a shared MLP and sigmoid gate; spatial attention applies a 7x7 convolution to channel-wise average/max maps and sigmoid-gates the feature map."
+  },
+  "reported_results": {
+    "best_epoch": 19,
+    "best_validation_accuracy": 0.6116,
+    "test_loss": 1.0346,
+    "test_accuracy": 0.6101,
+    "macro_precision": 0.5825,
+    "macro_recall": 0.5783,
+    "macro_f1": 0.5706,
+    "weighted_precision": 0.6174,
+    "weighted_recall": 0.6101,
+    "weighted_f1": 0.6036,
+    "per_class": {
+      "angry": {"precision": 0.4512, "recall": 0.618, "f1": 0.5216, "support": 958},
+      "disgust": {"precision": 0.4952, "recall": 0.4685, "f1": 0.4815, "support": 111},
+      "fear": {"precision": 0.4933, "recall": 0.252, "f1": 0.3335, "support": 1024},
+      "happy": {"precision": 0.8813, "recall": 0.8123, "f1": 0.8454, "support": 1774},
+      "neutral": {"precision": 0.5137, "recall": 0.6845, "f1": 0.5869, "support": 1233},
+      "sad": {"precision": 0.505, "recall": 0.4419, "f1": 0.4713, "support": 1247},
+      "surprise": {"precision": 0.7376, "recall": 0.7714, "f1": 0.7541, "support": 831}
+    }
+  },
+  "training_history_analysis": {
+    "logged_epochs": 20,
+    "logged_epoch_duration_seconds": 4839.9,
+    "logged_epoch_duration_minutes": 80.665,
+    "epoch_19": {
+      "train_loss": 0.9567,
+      "train_accuracy": 0.6216,
+      "validation_loss": 1.2489,
+      "validation_accuracy": 0.6116
+    },
+    "epoch_20": {
+      "train_loss": 0.9603,
+      "train_accuracy": 0.6221,
+      "validation_loss": 1.2301,
+      "validation_accuracy": 0.6033
+    },
+    "interpretation": "Training loss decreases and accuracy rises throughout most of the run. Validation accuracy and loss fluctuate, with best accuracy at epoch 19 and lowest validation loss at epoch 18. The small train/validation accuracy gap at the best epoch does not establish severe overfitting; the continuing training improvement and validation volatility are more consistent with incomplete/unstable convergence than a clear overfit diagnosis. The 20-epoch cap was reached."
+  },
+  "implementation_audit": {
+    "augmentation_scope": "Training dataset/loader only; validation and test use unaugmented preprocessing.",
+    "preprocessing": "48x48 grayscale and float scaling by 1/255; inference path is intended to use the same normalization.",
+    "loss_and_class_weights": "Weighted CrossEntropyLoss; class weights are computed from the training partition.",
+    "optimizer_and_scheduler": "Adam; ReduceLROnPlateau monitors validation loss and halves learning rate after configured patience.",
+    "early_stopping": "Monitors validation loss with patience 5 and minimum delta 0.0001.",
+    "checkpointing": "Checkpoint selection is highest validation accuracy; the saved evaluation output says epoch 19 was restored. The actual checkpoint file is absent now.",
+    "metric_split": "Saved test results are labeled test evaluation; source selects/restores the checkpoint before test scoring. Test metrics should not be used to choose subsequent experiments."
+  },
+  "audit_risks": [
+    "The baseline checkpoint and the results/metrics files referenced by notebook output are absent at this audit; only notebook-embedded training/evaluation outputs remain.",
+    "The adjacent YAML currently contains exp01_leakage_filtered_seed42 settings, not the historical baseline settings, and is not wired as evidence that overlap removal has run.",
+    "Test/train pixel-identical overlap and conflicting duplicate labels compromise an independent test estimate.",
+    "The historical test scores are not reproduced from model predictions because the checkpoint is unavailable.",
+    "The audit did not establish whether old test metrics influenced any later manual decisions; code-level model selection uses validation metrics."
+  ],
+  "preservation": {
+    "notebook_modified": false,
+    "current_yaml_modified": false,
+    "dataset_modified": false,
+    "baseline_checkpoint_overwritten": false,
+    "training_performed": false
+  },
+  "next_experiment_gate": "Do not proceed to optimization using this historical test score as an unbiased benchmark. First establish a leakage-controlled train/validation/test protocol and retain a new untouched test set or a documented de-duplicated test protocol; record this historical baseline as leakage-affected."
+}

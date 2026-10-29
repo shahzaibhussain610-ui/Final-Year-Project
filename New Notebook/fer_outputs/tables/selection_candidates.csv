@@ -1,0 +1,12 @@
+candidate,type,n_seeds,val_macro_f1_mean,val_macro_f1_std,val_acc_mean,deployable
+"ensemble(vit_small_patch16_224, mobilenetv3_large_100)",ensemble,1,0.6940528450033037,0.0,0.706046252438005,D_vit_small_patch16_224_s0
+vit_small_patch16_224|fer2013|finetune|112px|53d94d,single,1,0.6797102424029681,0.0,0.6996377821120089,D_vit_small_patch16_224_s0
+mobilenetv3_large_100|fer2013|finetune|112px|53d94d,single,1,0.6517111601849087,0.0,0.6634159933129006,D_mobilenetv3_large_100_s0
+tv_resnet50|fer2013|finetune|224px|139179 (baseline),single,1,0.6489937564565198,0.0,0.673725271663416,A1_report_resnet50
+convnext_tiny|fer2013|finetune|112px|53d94d,single,1,0.6445814160992998,0.0,0.6659236556143773,D_convnext_tiny_s0
+efficientnet_b0|fer2013|finetune|112px|53d94d,single,1,0.642041829320096,0.0,0.6567288938422959,D_efficientnet_b0_s0
+resnet50|fer2013|finetune|112px|53d94d,single,1,0.6350402200960368,0.0,0.6589579269991641,D_resnet50_s0
+hybrid_cnn_transformer|fer2013|finetune|112px|53d94d,single,1,0.6137829806013659,0.0,0.6478127612148231,D_hybrid_cnn_transformer_s0
+custom_attn_cnn|fer2013|scratch|48px|639268,single,1,0.5776844469764036,0.0,0.6124268598495403,D_custom_attn_cnn_s0
+custom_cnn_noattn|fer2013|scratch|48px|639268,single,1,0.5749089207176044,0.0,0.615491780440234,D_custom_cnn_noattn_s0
+custom_attn_cnn|fer2013|scratch|48px|f06bdc (baseline),single,1,0.48183310571027643,0.0,0.5427695736974087,A2_report_custom_cnn

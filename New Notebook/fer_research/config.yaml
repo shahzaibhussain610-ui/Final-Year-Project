@@ -1,0 +1,167 @@
+# =============================================================================
+# Two-Stage Facial Emotion Recognition Pipeline Configuration
+# Stage 1: Pre-training on RAVDESS (High-Definition Studio Expressions)
+# Stage 2: Fine-Tuning & Evaluation on FER2013 (Benchmark Dataset)
+# =============================================================================
+
+environment:
+  name: "ravdess_pretrain_fer2013_finetune_2cnn"
+  seed: 42
+  device: "cuda"                     # "cuda" | "cpu" (auto-detected)
+  deterministic: true
+  mixed_precision:
+    enabled: true                    # PyTorch AMP (torch.amp.autocast / GradScaler)
+    dtype: "float16"
+  dataloader:
+    num_workers: 0                   # 0 recommended on Windows to avoid spawn overhead
+    pin_memory: true
+    persistent_workers: false
+
+paths:
+  ravdess_root: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/RAVDESS"
+  fer2013_root: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/FER2013"
+  dataset_root: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/FER2013"
+  train_subdir: "train"
+  test_subdir: "test"
+  output_dir: "./outputs/ravdess_fer2013_2cnn"
+  checkpoint_dir: "./checkpoints/ravdess_fer2013_2cnn"
+  results_dir: "./results/ravdess_fer2013_2cnn"
+  cache_dir: "./cache/ravdess_frames"
+
+protocol:
+  pipeline: "pretrain_then_finetune"
+  stage1:
+    dataset: "ravdess"
+    video_glob: "**/*.mp4"
+    frames_per_video: 2              # 2 peak expression frames per video clip
+    max_videos: 1200                 # fast extraction (~2,400 clean face crops)
+  stage2:
+    dataset: "fer2013"
+    train_split: "train"
+    val_fraction_from_train: 0.10    # 10% carved from FER2013 train for validation (~2,870 samples)
+    test_split: "test"               # FER2013 test folder for final holdout (~7,178 samples)
+
+dataset:
+  name: "FER2013"
+  val_fraction_from_train: 0.10
+  image_size: [48, 48]
+  in_channels: 1                     # 1-channel Grayscale
+  num_classes: 7
+  classes:
+    - "angry"
+    - "disgust"
+    - "fear"
+    - "happy"
+    - "neutral"
+    - "sad"
+    - "surprise"
+  normalization:
+    mean: [0.5]
+    std: [0.5]
+  ravdess_emotion_map:
+    1: "neutral"
+    2: "neutral"                     # calm mapped to neutral
+    3: "happy"
+    4: "sad"
+    5: "angry"
+    6: "fear"
+    7: "disgust"
+    8: "surprise"
+
+augmentation:
+  enabled: true
+  train:
+    random_crop_padding: 4
+    horizontal_flip_prob: 0.5
+    rotation_degrees: 10
+    affine_translation: [0.05, 0.05]
+    affine_scale: [0.95, 1.05]
+    random_erasing_prob: 0.10
+  val_test:
+    normalization_only: true
+
+models:
+  # ── Model 1: Custom Deep ConvNet (VGG-style) ──────────────────────────────
+  cnn1_vgg:
+    model_id: "cnn1_vgg"
+    display_name: "Deep VGG-Style CNN"
+    description: "4-stage Convolutional Network with BatchNorm, Dropout & Global Average Pooling"
+    channels: [64, 128, 256, 512]
+    kernel_size: 3
+    padding: 1
+    dropout_conv: [0.25, 0.25, 0.30, 0.40]
+    fc_dim: 256
+    dropout_fc: 0.50
+
+  # ── Model 2: Custom Residual ConvNet (ResNet-48) ───────────────────────
+  cnn2_resnet:
+    model_id: "cnn2_resnet"
+    display_name: "Residual ConvNet (ResNet-48)"
+    description: "Residual Architecture with Skip-Connections and 4 Residual Stages tailored for 48x48 faces"
+    initial_channels: 32
+    stage_channels: [32, 64, 128, 256]
+    blocks_per_stage: [2, 2, 2, 2]
+    dropout: 0.30
+    fc_dim: 256
+
+stage1_training_ravdess:
+  batch_size: 64
+  epochs: 15
+  lr: 0.001
+  label_smoothing: 0.05
+  optimizer:
+    name: "adamw"
+    lr: 0.001
+    weight_decay: 0.0001
+  scheduler:
+    name: "cosine"
+    min_lr: 0.00001
+  loss:
+    name: "cross_entropy"
+    label_smoothing: 0.05
+
+stage2_finetuning_fer2013:
+  batch_size: 64
+  epochs: 25
+  lr: 0.0003                         # lower learning rate for gentle fine-tuning
+  label_smoothing: 0.05
+  patience: 6
+  optimizer:
+    name: "adamw"
+    lr: 0.0003                       # lower learning rate for gentle fine-tuning
+    weight_decay: 0.0001
+  scheduler:
+    name: "cosine"
+    min_lr: 0.000005
+  loss:
+    name: "weighted_cross_entropy"
+    class_weight_method: "inverse_sqrt"
+    label_smoothing: 0.05
+  early_stopping:
+    enabled: true
+    patience: 6
+    min_delta: 0.001
+    metric: "val_macro_f1"
+    mode: "max"
+  gradient_clipping:
+    enabled: true
+    max_norm: 5.0
+
+accuracy_boosters:
+  test_time_augmentation:
+    enabled: true
+    horizontal_flip: true
+  ensemble:
+    enabled: true
+    vgg_weight: 0.45
+    resnet_weight: 0.55
+
+evaluation:
+  metrics:
+    - "accuracy"
+    - "macro_f1"
+    - "weighted_f1"
+    - "confusion_matrix"
+    - "classification_report"
+  save_plots: true
+  save_predictions: true

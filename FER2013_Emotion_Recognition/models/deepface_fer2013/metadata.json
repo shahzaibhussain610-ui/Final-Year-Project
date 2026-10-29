@@ -1,0 +1,26 @@
+{
+  "class_names": [
+    "angry",
+    "disgust",
+    "fear",
+    "happy",
+    "neutral",
+    "sad",
+    "surprise"
+  ],
+  "config": {
+    "seed": 42,
+    "image_size": 224,
+    "batch_size": 32,
+    "epochs": 60,
+    "learning_rate": 0.01,
+    "dropout": 0.3,
+    "patience": 5,
+    "validation_fraction": 0.15,
+    "num_classes": 7,
+    "model_name": "deepface_fer2013_model"
+  },
+  "dataset_path": "D:\\FYP\\Datasets\\Facial Datasets\\FER2013",
+  "model_path": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deepface_fer2013\\deepface_fer2013_model.keras",
+  "checkpoint_path": "D:\\FYP\\FER2013_Emotion_Recognition\\models\\deepface_fer2013\\deepface_fer2013_model_best.keras"
+}
