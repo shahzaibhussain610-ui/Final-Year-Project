@@ -1,0 +1,175 @@
+# ==============================================================================
+# MASTER CONFIGURATION: SPEECH EMOTION RECOGNITION (SER) PRODUCTION PIPELINE
+# Target Accuracy: ~90%+ Multi-Corpus Speaker-Aware & Stratified Benchmark
+# Datasets: CREMA-D, RAVDESS, SAVEE, TESS (Full 12,162 Audio Files - Uncapped)
+# Feature Extraction: 430-Dim Handcrafted Acoustic Matrix (Prosody, Teager Energy,
+#                      F0 Dynamics, Spectral Contrast, 40 MFCCs + Delta + Delta2,
+#                      64 Log-Mel Filterbanks, Voice Quality) + Wav2Vec2 SSL GPU
+# Classification Suite: Calibrated RBF SVM, LightGBM, XGBoost, ExtraTrees,
+#                       Deep Residual MLP & Optuna/Dirichlet Weighted Super-Ensemble
+# ==============================================================================
+
+environment:
+  project_name: "Speech_Emotion_Recognition_Production_Pipeline_v2_90Plus"
+  seed: 42
+  device: "cuda"                  # Automatically utilizes RTX GPU if available
+  num_workers: 0                  # 0 avoids multiprocessing deadlock on Windows
+  output_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/outputs_voice"
+  checkpoint_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/checkpoints_voice"
+  feature_cache_path: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/checkpoints_voice/ser_extracted_features_v2.joblib"
+
+taxonomy:
+  num_classes: 6                  # 6 Core Mutual Emotions (neutral, happy, sad, angry, fear, disgust)
+  class_names:
+    0: "neutral"
+    1: "happy"
+    2: "sad"
+    3: "angry"
+    4: "fear"
+    5: "disgust"
+
+datasets:
+  extract_full_corpus: true       # Must be true to use all ~11,510+ files (no subsampling)
+  augment_train_fold: true        # Adds noise + speed/pitch perturbed copies to train split
+  augmentation_factor: 1          # +1 augmented acoustic view per training recording
+
+  # 1. CREMA-D Dataset (7,442 files, 91 speakers)
+  crema_d:
+    enabled: true
+    audio_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/Speech Emotion Recognition/Crema"
+    train_speakers_end: 1070      # 1001-1070 -> Train (70 speakers)
+    val_speakers_end: 1080        # 1071-1080 -> Val (10 speakers)
+    test_speakers_end: 1091       # 1081-1091 -> Held-out Test (11 speakers)
+
+  # 2. RAVDESS Dataset (1,440 files, 24 actors: 12 male, 12 female)
+  ravdess:
+    enabled: true
+    audio_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/Speech Emotion Recognition/Ravdess"
+    train_actors_end: 18          # Actors 01-18 -> Train (18 actors)
+    val_actors_end: 20            # Actors 19-20 -> Val (2 actors)
+    test_actors_end: 24           # Actors 21-24 -> Held-out Test (4 actors)
+
+  # 3. SAVEE Dataset (480 files, 4 male British English speakers: DC, JE, JK, KL)
+  savee:
+    enabled: true
+    audio_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/Speech Emotion Recognition/Savee"
+    train_speakers: ["DC", "JE", "JK"]
+    val_speakers: ["KL"]
+    test_speakers: ["KL"]         # Stratified 50/50 Val/Test split on unseen speaker
+
+  # 4. TESS Dataset (2,800 files, 2 female speakers: Young YAF, Older OAF)
+  tess:
+    enabled: true
+    audio_dir: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Voice and Facial/Speech Emotion Recognition/Tess"
+    stratified_split: true        # Prevents 100% OAF unseen-age domain collapse on Test
+    train_ratio: 0.75
+    val_ratio: 0.10
+    test_ratio: 0.15
+
+audio:
+  sample_rate: 16000              # Standard 16 kHz speech rate
+  min_duration_sec: 0.4           # Minimum valid audio length
+  target_duration_sec: 3.5        # Optimal window duration for utterance emotion
+  pre_emphasis_coeff: 0.97        # High-frequency vocal tract boost
+  normalize_waveform: true        # Peak & Z-score standardization across corpora
+  vad:
+    enabled: true
+    energy_threshold_ratio: 0.035 # Preserves quiet emotional breathiness (sad/fear)
+    frame_len_sec: 0.025
+    hop_len_sec: 0.010
+
+features:
+  ssl_backbone:
+    enabled: true                 # Extracts GPU Wav2Vec2-Base mean+std contextual pooling
+    bundle_name: "WAV2VEC2_BASE"
+  prosody:
+    frame_len_sec: 0.025
+    hop_len_sec: 0.010
+    include_teager_energy: true
+  pitch_f0:
+    frame_len_sec: 0.040
+    hop_len_sec: 0.015
+    min_freq_hz: 65
+    max_freq_hz: 480
+  voice_quality:
+    hnr: true
+    jitter: true
+    shimmer: true
+  spectral:
+    n_fft: 1024                   # Higher frequency resolution at 16kHz
+    centroid: true
+    bandwidth: true
+    rolloff: true
+    flatness: true
+    contrast: true
+    zcr: true
+  mfcc:
+    n_mfcc: 40                    # Upgraded from 20 -> 40 for fine formant capture
+    n_mels: 80
+    include_deltas: true
+    include_delta_deltas: true
+  mel_spectrogram:
+    n_mels: 64                    # Upgraded from 32 linear -> 64 Log-dB Mel bands
+    log_db: true
+
+feature_selection:
+  variance_threshold: 0.00005     # Drops near-constant zero-variance features
+  correlation_threshold: 0.975    # Retains rich complementary acoustic trajectories
+  scaler: "standard_power"        # Robust + Standard Yeo-Johnson Gaussian alignment
+  imputer_strategy: "median"
+  corpus_speaker_z_norm: true     # Removes dataset/microphone bias per corpus
+
+models:
+  primary: "stacking_super_ensemble"
+  svm:
+    kernel: "rbf"
+    C: 12.0                       # Stronger margin boundary on high-dim space
+    gamma: "scale"
+    class_weight: "balanced"
+    calibrated: true
+  lightgbm:
+    n_estimators: 1200
+    learning_rate: 0.025
+    num_leaves: 63
+    max_depth: 8
+    min_child_samples: 15
+    subsample: 0.85
+    colsample_bytree: 0.75
+    reg_alpha: 0.1
+    reg_lambda: 1.0
+    class_weight: "balanced"
+    early_stopping_rounds: 35     # Patience = 35 rounds prevents premature stopping
+    random_state: 42
+  xgboost:
+    n_estimators: 1200
+    learning_rate: 0.025
+    max_depth: 7
+    min_child_weight: 2
+    subsample: 0.85
+    colsample_bytree: 0.75
+    reg_alpha: 0.1
+    reg_lambda: 1.5
+    early_stopping_rounds: 35     # Patience = 35 rounds
+    random_state: 42
+  extra_trees:
+    n_estimators: 700
+    max_features: "sqrt"
+    class_weight: "balanced_subsample"
+    random_state: 42
+  deep_mlp:
+    hidden_layer_sizes: [768, 384, 192]
+    learning_rate_init: 0.0008
+    alpha: 0.0005
+    max_iter: 800
+    early_stopping: true
+    patience: 30                  # Patience = 30 epochs
+    random_state: 42
+  voting_ensemble:
+    voting: "soft"
+    optimize_weights_on_val: true
+    weights: [1.8, 1.5, 1.5, 1.0, 1.4] # Fallback weights [SVM, LGBM, XGB, ET, MLP]
+
+outputs:
+  final_bundle_path: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/final_ser_production_bundle.joblib"
+  metrics_report_path: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/outputs_voice/ser_test_metrics.json"
+  confusion_matrix_path: "C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Voice and Facial recognition/outputs_voice/ser_percentage_confusion_matrix.png"
