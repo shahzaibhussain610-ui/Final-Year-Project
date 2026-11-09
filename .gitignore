@@ -45,3 +45,4 @@ desktop.ini
 # Empty scratch folders
 New folder/
 
+*.joblib
