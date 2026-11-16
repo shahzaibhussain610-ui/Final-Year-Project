@@ -1,0 +1,58 @@
+project:
+  name: facial_emotion_fine_tuning
+  seed: 42
+  output_dir: ./outputs
+  checkpoint_dir: ./checkpoints
+data:
+  root: C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/fer2013plus/fer2013
+  manifest: null
+  path_column: path
+  label_column: label
+  image_size: 224
+  validation_fraction: 0.15
+  test_fraction: 0.0
+  use_official_train_test_split: true
+  extensions:
+  - .jpg
+  - .jpeg
+  - .png
+  - .bmp
+  - .webp
+labels:
+  class_names:
+  - anger
+  - contempt
+  - disgust
+  - fear
+  - happiness
+  - neutral
+  - sadness
+  - surprise
+  num_classes: 8
+model:
+  name: all
+  checkpoint: null
+  pretrained_torchvision: false
+  freeze_backbone_epochs: 1
+  dropout: 0.2
+  run_all_available_models: true
+training:
+  epochs: 12
+  batch_size: 64
+  num_workers: 0
+  learning_rate: 0.0001
+  head_learning_rate: 0.0005
+  weight_decay: 0.0001
+  label_smoothing: 0.05
+  gradient_clip_norm: 1.0
+  early_stopping_patience: 4
+  mixed_precision: true
+  scheduler: cosine
+  class_weights: balanced
+evaluation:
+  save_confusion_matrix: true
+  save_classification_report: true
+  save_predictions: true
+  final_model_path: ./outputs/fused_model.pt
+inference:
+  image_path: null
