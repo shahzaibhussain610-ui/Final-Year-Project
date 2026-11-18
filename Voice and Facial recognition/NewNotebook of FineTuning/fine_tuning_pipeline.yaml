@@ -1,46 +1,62 @@
+# ==============================================================================
+# FACIAL EMOTION RECOGNITION (FER) 7-CLASS FINE-TUNING PIPELINE CONFIGURATION
+# ==============================================================================
+
 project:
-  name: facial_emotion_fine_tuning
+  name: facial_emotion_7class_fine_tuning
   seed: 42
   output_dir: ./outputs
   checkpoint_dir: ./checkpoints
+
 data:
   root: C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/fer2013plus/fer2013
-  manifest: null
-  path_column: path
-  label_column: label
+  fer2013_benchmark_dir: C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/FER2013
   image_size: 224
   validation_fraction: 0.15
-  test_fraction: 0.0
   use_official_train_test_split: true
   extensions:
-  - .jpg
-  - .jpeg
-  - .png
-  - .bmp
-  - .webp
+    - .jpg
+    - .jpeg
+    - .png
+    - .bmp
+    - .webp
+
 labels:
   class_names:
-  - anger
-  - disgust
-  - fear
-  - happiness
-  - neutral
-  - sadness
-  - surprise
+    - anger
+    - disgust
+    - fear
+    - happiness
+    - neutral
+    - sadness
+    - surprise
   num_classes: 7
+  label_aliases:
+    angry: anger
+    disgust: disgust
+    fear: fear
+    happy: happiness
+    neutral: neutral
+    sad: sadness
+    surprise: surprise
+
 model:
-  name: all
-  checkpoint: null
+  active_backbones:
+    - efficientnet_b2
+    - resnet50
+    - vit_b_16
   pretrained_torchvision: false
   freeze_backbone_epochs: 1
   dropout: 0.2
-  run_all_available_models: true
+
 training:
   epochs: 12
   batch_size: 64
   num_workers: 0
+  pin_memory: true
   learning_rate: 0.0001
   head_learning_rate: 0.0005
+  vit_lr_factor: 0.35
   weight_decay: 0.0001
   label_smoothing: 0.05
   gradient_clip_norm: 1.0
@@ -48,10 +64,13 @@ training:
   mixed_precision: true
   scheduler: cosine
   class_weights: balanced
+  class_weight_beta: 0.60
+
 evaluation:
   save_confusion_matrix: true
   save_classification_report: true
-  save_predictions: true
+  save_roc_curves: true
   final_model_path: ./outputs/fused_model.pt
+
 inference:
   image_path: null
