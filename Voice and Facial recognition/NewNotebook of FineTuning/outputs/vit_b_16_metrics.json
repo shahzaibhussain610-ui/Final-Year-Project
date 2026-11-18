@@ -1,0 +1,71 @@
+{
+  "model": "vit_b_16",
+  "train_accuracy_final": 0.9424688372868637,
+  "validation_accuracy_best": 0.8519130845536136,
+  "test_accuracy": 0.8381101021566402,
+  "train_loss_final": 0.6237683429566738,
+  "validation_loss_best": 0.9519073038547176,
+  "test_macro_f1": 0.7609787520249307,
+  "test_micro_f1": 0.8381101021566402,
+  "test_weighted_f1": 0.83816827823082,
+  "test_macro_precision": 0.7735228675686797,
+  "test_macro_recall": 0.7516051906195254,
+  "test_roc_auc_ovr_macro": 0.9340028412390661,
+  "classification_report": {
+    "anger": {
+      "precision": 0.80623973727422,
+      "recall": 0.7624223602484472,
+      "f1-score": 0.7837190742218675,
+      "support": 644.0
+    },
+    "disgust": {
+      "precision": 0.6666666666666666,
+      "recall": 0.5614035087719298,
+      "f1-score": 0.6095238095238096,
+      "support": 57.0
+    },
+    "fear": {
+      "precision": 0.6643356643356644,
+      "recall": 0.5688622754491018,
+      "f1-score": 0.6129032258064516,
+      "support": 167.0
+    },
+    "happiness": {
+      "precision": 0.9262520638414969,
+      "recall": 0.9211822660098522,
+      "f1-score": 0.9237102085620198,
+      "support": 1827.0
+    },
+    "neutral": {
+      "precision": 0.8645135880267822,
+      "recall": 0.8452060069310743,
+      "f1-score": 0.8547507788161994,
+      "support": 2597.0
+    },
+    "sadness": {
+      "precision": 0.6543478260869565,
+      "recall": 0.7032710280373832,
+      "f1-score": 0.6779279279279279,
+      "support": 856.0
+    },
+    "surprise": {
+      "precision": 0.8323045267489712,
+      "recall": 0.8988888888888888,
+      "f1-score": 0.8643162393162394,
+      "support": 900.0
+    },
+    "accuracy": 0.8381101021566402,
+    "macro avg": {
+      "precision": 0.7735228675686797,
+      "recall": 0.7516051906195254,
+      "f1-score": 0.7609787520249307,
+      "support": 7048.0
+    },
+    "weighted avg": {
+      "precision": 0.8392114881806372,
+      "recall": 0.8381101021566402,
+      "f1-score": 0.83816827823082,
+      "support": 7048.0
+    }
+  }
+}
