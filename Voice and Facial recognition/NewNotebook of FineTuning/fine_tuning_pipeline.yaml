@@ -9,7 +9,7 @@ project:
   checkpoint_dir: ./checkpoints
 
 data:
-  root: C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/fer2013plus/fer2013
+  root: C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/fer2013plus
   fer2013_benchmark_dir: C:/Users/Shahzaib Hussain/Desktop/Shahzaib Hussain/FYP/Datasets/Facial Dataset/FER2013
   image_size: 224
   validation_fraction: 0.15
