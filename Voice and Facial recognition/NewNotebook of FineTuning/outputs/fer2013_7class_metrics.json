@@ -1,5 +1,5 @@
 {
-  "dataset": "FER2013 (7 Classes)",
+  "dataset": "FER2013 (test)",
   "dataset_path": "C:\\Users\\Shahzaib Hussain\\Desktop\\Shahzaib Hussain\\FYP\\Datasets\\Facial Dataset\\FER2013\\test",
   "total_samples": 7178,
   "constrained_7class": {

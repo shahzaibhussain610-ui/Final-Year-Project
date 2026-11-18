@@ -21,14 +21,13 @@ data:
 labels:
   class_names:
   - anger
-  - contempt
   - disgust
   - fear
   - happiness
   - neutral
   - sadness
   - surprise
-  num_classes: 8
+  num_classes: 7
 model:
   name: all
   checkpoint: null
